@@ -1,0 +1,63 @@
+extends ../layout  
+  
+append content
+ h3 Penambahan Produk
+ br
+ form(method='post', action='/produk/cektambah',enctype='multipart/form-data')
+   table.table  
+    tr
+    td(style='width:150px') Nama Produk
+    td 
+     input(type='text', name='nama',style='width:400px')
+    tr
+    td Kategori
+    td 
+     select(name='kategori')
+      each val in listKategori
+          option(value='#{val._id}') #{val.nama}         
+    tr
+    td Harga Pas/Buah
+    td Rp <input type='number', name='berat'/>
+     //select(name='matauang',style='width:100px')
+     //     option(value='gudang')  Rp
+     //     option(value='etalase')  $
+     // input(type='number', name='harga')
+    tr
+    td Berat
+    td  <input type='number', name='berat' /> Gram
+         //select(name='satuanberat',style='width:100px')
+         //     option(value='gudang')  Gram
+         //     option(value='etalase')  Kilogram
+           input(type='number', name='berat')
+    tr
+    td Gambar
+    td 
+     input(type='file', name='gambar')
+    tr
+    td Asuransi
+    td  
+        select(name='asuransi')
+          option(value='opsional')  Opsional
+          option(value='ya')  Ya  
+    tr
+    td Kondisi
+    td 
+        select(name='kondisi')
+          option(value='0')  Baru
+          option(value='1')  Bekas   
+    tr
+    td Deskripsi Produk
+    td 
+     textarea(type='text', name='deskripsi' )
+    tr
+    td 
+     input.btn.btn-succes(type='submit', value='simpan')
+     input.btn.btn-danger(type='reset', value='batal')  
+   
+  
+
+
+
+
+
+

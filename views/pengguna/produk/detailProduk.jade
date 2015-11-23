@@ -1,0 +1,49 @@
+extends ../layoutBelanja  
+  
+append content
+  if(produk.length == 0)
+     .alert.alert-danger  
+      center 
+       h4 
+        b Tidak Ada Produk                                           
+  else      
+  .col-sm-3
+      table
+        tr
+          td(colspan='4') <img src='/images/produk/#{produk[0].gambar}' width='250'>
+        tr
+          td(height='160') <img src='/images/produk/#{produk[0].gambar}' width='80'>
+          td <img src='/images/produk/#{produk[0].gambar}' width='80'>
+          td <img src='/images/produk/#{produk[0].gambar}' width='80'>
+
+  .col-sm-5
+      p <a href='/produk/caridaftar/#{kategori.url}'>#{kategori.nama} </a> > <a href='#'> #{produk[0].nama}</a>
+      table
+        tr                       
+          td <h1>  #{produk[0].nama} </h1>
+            | <h2> Rp <span id='uang'> </span></h2>            
+            | <a href='/pembelian/keranjangbelanja' class='btn btn-primary'>beli</a> <br/><br/>
+            | <p>Terjual : ambil dari data penjualan </p>
+            | <p>Asuransi : tipe booelean</p>
+            | <p>Berat : #{produk[0].berat} satuan berat </p>
+            | <p>Kondisi : #{produk[0].kondisi} //tipe booelean</p>
+            | <p>Minimal Pemesanan : undifined</p>
+            | <p>Deskripsi : #{produk[0].deskripsi}</p>
+          script.
+            function numberFormat(_number, _sep) {
+                _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                _number = _number.replace(new RegExp("^(\\d{" + (_number.length%3? _number.length%3:0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                if(typeof _sep != "undefined" && _sep != " ") {
+                    _number = _number.replace(/\s/g, _sep);
+                }
+                return _number;
+            }      
+            document.getElementById("uang").innerHTML = numberFormat("#{produk[0].harga}",".");
+  .col-sm-3
+   h3 Informasi toko            
+   p <a href='#'>Barokah Clothing </a>
+   p <a href='#'>Jakarta </a>
+   p Kecepatan 
+   p Akurasi
+   p Pelayanan
+   p Dukungan Pengiriman

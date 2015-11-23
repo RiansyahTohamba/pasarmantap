@@ -1,0 +1,81 @@
+doctype html
+html(lang='en')
+  head
+    title Home | E-Shopper
+    link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
+    link(href='/stylesheets/font-awesome.min.css', rel='stylesheet')
+    link(href='/stylesheets/main.css', rel='stylesheet')
+    script(src='/javascripts/jquery-1.11.3.min.js')
+    script(src='/javascripts/bootstrap-3.3.5.min.js')
+  body
+    include ../header
+  section <br/><br/>
+    .container
+      .row
+        .col-sm-1
+        .col-sm-2
+          .left-sidebar
+            #accordian.panel-group.category-products
+              // category-productsr
+              .panel-default
+                a(href='#'): h5=nama
+                //| saldo e-cash Rp 0
+                a(href='#'): h5 Toko Barokah <br/>
+              //| Toko Reguler <br/> <a href='#'> Upgrade ke Gold </a>
+              .panel-default
+                ul.nav.nav-list
+                  //li.nav-header
+                  // h5
+                  //  b Kotak Masuk
+                  //li
+                  //  a(href='#') Pesan
+                  //li
+                  //  a(href='#') Diskusi Produk
+                  //li
+                  //  a(href='#') Review
+                  //li
+                  //  a(href='#') Notifikasi Harga
+                  //li
+                  //  a(href='#') Pusat Resolusi
+                  li.nav-header
+                    h5
+                      b Toko Saya
+                  li
+                    a(href='/penjualan/daftar') Penjualan
+                  li
+                    a(href='/produk/tambah') Tambah Produk
+                  li
+                    a(href='/produk/daftar') Daftar Produk
+                  //li
+                  //  a(href='#') Top Ads
+                  li
+                    a(href='/toko/pengaturan') Pengaturan Toko
+                  //li
+                  //  a(href='#') Pengaturan Admin
+                  li.nav-header
+                    h5
+                      b Profil Saya
+                  li
+                    a(href='/pembelian/daftar') Pembelian
+                  li
+                    a(href='/toko/favorit') Toko Favorit
+                  li
+                    a(href='#') Pengaturan
+            // /category-products
+        .col-sm-8.padding-right
+          block content
+// /konten yang bersifat dinamis
+
+append footer
+    footer#footer
+      // Footer
+      br
+      br
+      .footer-bottom
+        .container
+          .row
+            p.pull-left © 2015 pasarmantap
+            p.pull-right
+              | Designed by
+              span
+                a(target='_blank', href='http://www.themeum.com') Themeum

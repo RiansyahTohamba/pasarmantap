@@ -1,0 +1,71 @@
+html
+   head
+    title #{title}
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    script(src='/javascripts/vendor/jquery.min.js')
+    script(type='text/javascript').
+        $(document).ready(function(){
+            $("#provinsi").change(function(){
+                $.ajax({
+                    type: 'GET',
+                    url: '/getkabupaten/' + $('#provinsi option:selected').val(),
+                    success: function (result) {
+                        $('#kabupaten').empty();
+                        $('#kecamatan').empty();
+                        $('#kabupaten').append(result.listArr)
+                    }
+                })
+            });
+            $("#kabupaten").change(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/getkecamatan/' + $('#kabupaten option:selected').val(),
+                    success: function (result) {
+                        $('#kecamatan').empty();
+                        $('#kecamatan').append(result.listArr)
+                    }
+                })
+            });
+        });
+   body
+        img(alt="" src="/images/cover.jpg" style="min-height: 100%;min-width: 100%;width: 100%;height: auto;position: fixed;opacity: 0.6;top: 0;left: 0;z-index: -9999") 
+             
+        .container(style="height: 120px;") 
+            .row.clearfix
+
+
+        .container
+            .col-lg-12.column
+                .col-lg-4.column                                
+                .col-lg-4.column 
+                    .panel.panel-default(style="box-shadow: 0px 0px 10px 2px black;")
+                        .panel-heading   
+                            p
+                              h4 Pendaftaran Baru
+
+                         form(role="form" action="daftarBaru" method="post")
+                            .panel-body  
+                                .form-group  
+                                    .input-group 
+                                         span(class="input-group-addon") Email
+                                         input(type="text" name="emailBaru" class="form-control" placeholder="Masukan email anda" required="required")
+                                .form-group 
+                                    .input-group 
+                                         span(class="input-group-addon") Sandi
+                                         input(type="password" name="sandiBaru" class="form-control" placeholder="Masukan kata sandi anda" required="required")
+
+                                // digunakan pada form pengiriman barang
+                                //.form-group
+                                //    .input-group
+                                //        span(class="input-group-addon") Alamat Pengiriman
+                                //        select#provinsi(required=true)
+                                //            option(value='') pilih provinsi
+                                //            each val in listProv
+                                //                option(value='#{val._id}') #{val.provinsi}
+                                //        select#kabupaten(required=true)
+                                //            option(disabled) pilih kabupaten/kota
+                                //        select#kecamatan(required=true)
+                                //            option(disabled) pilih kecamatan
+                                .panel-footer
+                                    button(type="submit" class="btn btn-block btn-primary btn-lg btn-lg")
+                                         i(class="glyphicon glyphicon-ok-circle") Daftar

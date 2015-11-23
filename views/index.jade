@@ -1,0 +1,47 @@
+extends pengguna/layoutBelanja
+append content
+    center
+        .row(style='width:900px;font-size : 14pt')
+            p(align='left'): b Pilih kategori
+            each val in kategori_produk
+                .col-sm-4(align='left')
+                    li: a(href='#') #{val.kategori}
+        div(style='margin:50px 0')
+        .row(style='width:900px')
+            h2.title.text-center HOT LIST
+            .col-sm-4
+                .product-image-wrapper
+                    .single-products
+                        .productinfo.text-center
+                            img(src='/images/home/kucing.jpg', alt='')
+                            p
+                                span.col-sm-4.text-left.ellipsis
+                                    b Kucing Persia
+                                span.text-right.ellipsis mulai dari Rp 1.000.000
+            .col-sm-4
+                .product-image-wrapper
+                    .single-products
+                        .productinfo.text-center
+                            img(src='/images/home/kucing.jpg', alt='')
+                            p
+                                span.col-sm-4.text-left.ellipsis
+                                    b Kucing Persia
+                                span.text-right.ellipsis mulai dari Rp 1.000.000
+            .col-sm-4
+                .product-image-wrapper
+                    .single-products
+                        .productinfo.text-center
+                            img(src='/images/home/kucing.jpg', alt='')
+                            p
+                                span.col-sm-4.text-left.ellipsis
+                                    b Kucing Persia
+                                span.text-right.ellipsis mulai dari Rp 1.000.000
+        div(style='margin:50px 0')
+        .row(style='width:900px',align='left')
+            h3 Tokopedia - Jual Beli Online Aman dan Nyaman <br>
+            p Tokopedia merupakan pasar / mal online terbesar di Indonesia yang memungkinkan individu maupun pemilik usaha di Indonesia untuk membuka dan mengelola toko online mereka secara mudah dan gratis, sekaligus memberikan pengalaman berbelanja online yang lebih aman dan nyaman. Jual beli online menjadi lebih menyenangkan. Punya online shop? Buka cabang nya di Tokopedia sekarang! Gratis!
+            a.btn-primary.btn(href='#') Daftar
+            | <br><br>
+        div(style='margin:30px 0')
+
+

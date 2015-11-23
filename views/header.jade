@@ -1,0 +1,63 @@
+
+append header
+    header#header
+        // header
+        .header-middle
+            // header_top
+            .container
+                .row
+                    .col-sm-1
+                    .col-sm-2
+                        .logo.pull-left
+                            a(href='/beranda')
+                                img(src='/images/home/logo.png', alt='')
+                    .col-sm-9
+                        .mainmenu
+                            ul.nav.navbar-nav
+                                li.dropdown
+                                    a(href='#')
+                                        | Kategori
+                                        i.fa.fa-angle-down
+                                    ul.sub-menu(role='menu',style='width:250px')
+                                            li: a(href='#') Pakaian
+                                            li: a(href='#') Buku
+                                            li: a(href='#') Mainan & Hobi
+                                            li: a(href='#') Software
+                                            li: a(href='#') Film
+                                            li: a(href='#') Musik
+                                            li: a(href='#') Otomotif
+                                            li: a(href='#') Elektronik
+                                            li: a(href='#') Kamera
+                                            li: a(href='#') Laptop & Notebook
+                                            li: a(href='#') Tablet & Smartphone
+                                            li: a(href='#') Sepatu
+                                li
+                                    form(action='/cekPencarian', method='get')
+                                        input(type='text', placeholder='Cari Toko/Produk')
+                                        select(name='pilihan',style='width:200px')
+                                            option(value='barokah')  Semua Kategori
+                                            option(value='barokah')  barokah
+                                            option(value='barokah1')  barokah 1
+                                            option(value='barokah2')  barokah 2
+                                        input(type='submit', value='cari')
+
+                                if (nama)
+                                    li
+                                        a.dropdown(href='#', data-toggle='dropdown')
+                                            img(src='/images/default-user-photo.png',width='30')
+                                        div.dropdown-menu
+                                            a.dropdown(href='#', data-toggle='dropdown') keluar
+                                else
+                                    li
+                                        a(href='#')
+                                            i.fa.fa-user
+                                            |  Daftar
+                                    li
+                                        a.dropdown(href='#', data-toggle='dropdown') Masuk
+                                        div.dropdown-menu
+                                            form(method='post',style='padding : 20px')
+                                                p: input(type='text', placeholder='Email')
+                                                p: input(type='password', placeholder='Sandi')
+                                                p: input.btn.btn-primary(type='submit' value='Masuk')
+
+

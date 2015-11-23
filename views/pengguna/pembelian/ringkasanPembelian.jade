@@ -1,0 +1,94 @@
+extends pembayaran
+append content
+ .alert.alert-warning  
+  p Pastikan kembali detil barang belanjaan Anda. Jika masih ada yang ingin diubah, silakan klik tombol "Keranjang Belanja". Dan jika sudah yakin, lanjutkan dengan klik tombol "Bayar" untuk menyelesaikan transaksi Anda.     
+ .container
+  h4 Pilih Metode Pembayaran yang ingin digunakan 
+ .container
+  form(action='cekringkasan',method='post')
+    style(type='text/css').
+      td{
+      padding: 10px 10px;
+      }
+    table(border='1', width='80%')
+      tr
+        td(height='60px', colspan='6')
+          span(style='font-size : 13pt')
+            | Pembelian dari toko : 
+            a(href='#')  toko barokah 
+          span.pull-right
+            | Apabila stok yang tersedia hanya sebagian: 
+            select(name='opsi', style='width: 160px')
+              option(value='batal') Batalkan keseluruhan pesanan
+              option(value='tunda') Tunda keseluruhan pesanan
+      tr
+        td(height='70px', colspan='3')
+          span.pull-left(style='padding : 0 10px 0 10px')
+            img(src='images/transfer-3.png')
+          span.pull-left
+            b  Fiqih islam wa adillatuhu
+            br
+            b(style='font-size : 8pt')  2 Barang (0.5 kg) x Rp 120.000
+            br
+            a(href='#', style='font-size : 8pt') Ubah
+        td
+          b  Harga Barang
+          br
+          |                     Rp 250.000
+        td(colspan='2')
+          b  Keterangan
+          br
+          |                     - 
+          span.pull-right
+            a(href='#') hapus
+      tr
+        td
+          b  Alamat Tujuan
+          a(href='#', style='font-size : 11px') Ubah
+          br
+          | JNE - Reguler
+          br
+          b  Riansyah
+          br
+          | Jln Anawai No 40
+          br
+          | Kendari Kota Kendari, 8373733
+          br
+          | Sulawesi Tenggara
+          br
+          | Telp: 085756603194
+        td
+          b  Asuransi 
+          br
+          select
+            option  Ya 
+            option  Tidak 
+        td
+          b  Total Barang
+          br
+          |  2 (1 kg)
+        td
+          b  Subtotal 
+          br
+          |  Rp 240.000
+        td
+          b  Biaya Asuransi
+          br
+          |  Rp 0
+        td
+          b  Ongkos Kirim
+          br
+          |  Rp 4.000
+      tr
+        td(colspan='6')
+          span.pull-left(style='padding : 10px 10px ')
+            a(href='#') Hapus Semua
+          span.pull-right(style='padding : 10px 0px')
+            | Total Per Tagihan 
+            b  Rp 240.000
+      tr
+        td(colspan='6')
+          span.pull-left(style='padding : 10px 0px')
+            a(href='keranjangbelanja')  << keranjang berbelanja 
+          span.pull-right
+            input.btn.btn-primary(type='submit', value='bayar')

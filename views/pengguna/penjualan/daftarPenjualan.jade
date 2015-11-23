@@ -1,0 +1,20 @@
+extends tabPenjualan  
+  
+append contentDalam  
+  .container   
+    form.form-inline
+     input.input-small(type='text', placeholder='Invoice / Nama Pembeli')   
+     select(name='tambahkan',style='width:100px')
+        option(value='gudang')  Semua Transaksi 
+        option(value='etalase')  Transaksi Belum Selesai
+        option(value='etalase')  Transaksi Telah Selesai
+     input.input-small(type='date')
+     input.input-small(type='date')
+     input.input-small(type='submit', value='cari')
+  br   
+  .alert.alert-danger
+   center 
+       h4 
+        b Tidak ada daftar pemesanan
+
+            

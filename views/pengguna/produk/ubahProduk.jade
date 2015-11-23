@@ -1,0 +1,65 @@
+extends ../layout  
+  
+append content
+ h3 Pengubahan Produk  
+ br
+ form(method='post', action='/produk/cekubah',enctype='multipart/form-data')
+   table.table  
+    tr
+    td(style='width:150px') Nama Produk
+    td 
+     input(type='text', name='nama',style='width:400px', value='#{produk.produk[0].nama}')
+    tr
+    td Kategori
+    td 
+     select(name='kategori')
+      each val in listKategori
+          option(value='#{val._id}') #{val.nama}         
+    tr
+    td Harga Pas/Buah
+    td 
+     select(name='matauang',style='width:100px')
+          option(value='gudang')  Rp
+          option(value='etalase')  $
+     input(type='number', name='harga',value='#{produk.produk[0].harga}')
+
+    tr
+    td Berat
+    td 
+     select(name='satuanberat',style='width:100px')
+          option(value='gudang')  Gram
+          option(value='etalase')  Kilogram   
+     input(type='number', name='berat',value='#{produk.produk[0].berat}')
+    tr
+    td Gambar
+    td 
+     input(type='file', name='gambar')
+     img(src='/images/produk/#{produk.produk[0].gambar}' width='100px' height='100px')
+    tr
+    td Asuransi
+    td  
+        select(name='asuransi')
+          option(value='opsional')  Opsional
+          option(value='ya')  Ya  
+    tr
+    td Kondisi
+    td 
+        select(name='kondisi')
+          option(value='0')  Baru
+          option(value='1')  Bekas   
+    tr
+    td Deskripsi Produk
+    td 
+     textarea(type='text', name='deskripsi',value='#{produk.produk[0].deskripsi}' )
+    tr
+    td 
+     input.btn.btn-succes(type='submit', value='simpan')
+     input.btn.btn-danger(type='reset', value='batal')  
+   
+  
+
+
+
+
+
+

@@ -1,0 +1,20 @@
+extends ../layout  
+
+append content            
+            .category-tab        
+             h3 #{tabMenu}
+             br 
+            .category-tab
+              // category-tab
+              .col-sm-12
+                ul.nav.nav-tabs
+                  li
+                    a(href='/pembelian/konfirmasipembayaran') Konfirmasi Pembayaran
+                  li
+                    a(href='/pembelian/konfirmasipenerimaan') Konfirmasi Penerimaan
+                  li
+                    a(href='/pembelian/statuspemesanan') Status Pemesananan
+                  li
+                    a(href='/pembelian/daftar') Daftar Transaksi
+                .tab-content                   
+                 block contentDalam

@@ -1,0 +1,59 @@
+extends pembayaran
+append content
+ .alert.alert-warning  
+  h4 Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran transfer manual     
+ center 
+
+  .alert.alert-warning(style='width:250px')
+      p Jumlah yang harus dibayar
+      h4 Rp 244.000 
+  a.btn.btn-primary konfirmasi pembayaran
+
+ .container
+  h4 <br> Agar pesanan Anda dapat diproses oleh penjual, ikuti langkah berikut ini: <br/><br/><br/>
+  ol
+        li.mb-10
+         | Transfer sejumlah <b> Rp 244.051</b> ke salah satu nomor rekening Tokopedia di bawah ini: <br/><br/>
+         table(width='900px')
+          tr
+           td 
+            .row-fluid
+              img.mt-5(alt='BCA', src='/images/muamalat.jpg')
+            .row-fluid
+              b.clear-b Bank BCA
+              .clear-b Cab. Setiabudhi
+            .row-fluid
+              .clear-b 372 177 3939
+            .row-fluid
+              .clear-b a/n PT. Bridea Indonesia            
+           td 
+            .row-fluid
+              img.mt-5(alt='BCA', src='/images/muamalat.jpg')
+            .row-fluid
+              b.clear-b Bank BCA
+              .clear-b Cab. Setiabudhi
+            .row-fluid
+              .clear-b 372 177 3939
+            .row-fluid
+              .clear-b a/n PT. Bridea Indonesia            
+           td 
+            .row-fluid
+              img.mt-5(alt='BCA', src='/images/muamalat.jpg')
+            .row-fluid
+              b.clear-b Bank BCA
+              .clear-b Cab. Setiabudhi
+            .row-fluid
+              .clear-b 372 177 3939
+            .row-fluid
+              .clear-b a/n PT. Bridea Indonesia            
+        br      
+        li.mb-10
+          | Setelah melakukan transfer, segera lakukan 
+          a(href='https://www.tokopedia.com/tx_payment_confirm.pl?mst=1') Konfirmasi Pembayaran
+          | . Pembayaran tanpa melakukan konfirmasi tidak dapat kami proses lebih lanjut. 
+          | <br>Pastikan Anda mengisi data yang tepat saat melakukan konfirmasi pembayaran.
+        br  
+        li
+          | Pesanan akan 
+          strong.text-price otomatis dibatalkan
+          |  dalam waktu 3 hari  jika Anda tidak melakukan pembayaran dan konfirmasi pembayaran.

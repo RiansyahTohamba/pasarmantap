@@ -1,0 +1,23 @@
+extends tabPenjualan  
+  
+append contentDalam
+  .alert.alert-warning  
+    p Order Anda akan otomatis kami batalkan apabila Anda melewati batas waktu respon (3 hari) setelah order diverifikasi.
+  .container   
+    form.form-inline
+     input.input-small(type='text', placeholder='Invoice / Nama Pembeli')   
+     label Jatuh Tempo Respon :
+     select(name='tambahkan',style='width:100px')
+        option(value='gudang')  Pilih
+        option(value='etalase')  Transaksi Belum Selesai
+        option(value='etalase')  Transaksi Telah Selesai
+     input.input-small(type='submit', value='cari')
+  br  
+  .alert.alert-danger
+   center 
+       h4 
+        b Tidak ada daftar pemesanan
+  .alert.alert-warning  
+    p Tips: Dengan menjadi Gold Merchant Tokopedia, Anda akan mendapat satu akun Admin Toko Gratis. Admin Toko yang Anda tunjuk bisa membantu Anda dalam mengelola pesanan. Pelajari selengkapnya di sini.        
+
+            

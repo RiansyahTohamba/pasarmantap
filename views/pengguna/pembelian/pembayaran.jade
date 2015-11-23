@@ -1,0 +1,148 @@
+doctype html
+html(lang='en')
+  head
+    title Home | E-Shopper
+    link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
+    link(href='/stylesheets/font-awesome.min.css', rel='stylesheet')
+    link(href='/stylesheets/prettyPhoto.css', rel='stylesheet')
+    link(href='/stylesheets/price-range.css', rel='stylesheet')
+    link(href='/stylesheets/animate.css', rel='stylesheet')
+    link(href='/stylesheets/main.css', rel='stylesheet')
+    link(href='/stylesheets/responsive.css', rel='stylesheet')
+    //if lt IE 9
+      script(src='/javascripts/html5shiv.js')
+      script(src='/javascripts/respond.min.js')
+  // /head
+  body
+  append header
+    header#header
+      // header
+      .header-middle
+        // header_top
+        .container
+          .row            
+            .col-sm-1
+            .col-sm-2
+              .logo.pull-left
+                a(href='/beranda')
+                  img(src='/images/home/logo.png', alt='')
+            .col-sm-9
+              .mainmenu
+                ul.nav.navbar-nav
+                  li.dropdown
+                    a(href='#')
+                      | Kategori
+                      i.fa.fa-angle-down
+                    ul.sub-menu(role='menu')
+                      .col-sm-4
+                        li
+                          a(href='shop.html') Fashion
+                        li
+                          a(href='product-details.html') Pakaian
+                        li
+                          a(href='checkout.html') Kecantikan
+                        li
+                          a(href='cart.html')
+                        li
+                          a(href='login.html') Mainan & Hobi
+                      .col-sm-4
+                        li
+                          a(href='shop.html') Handphone & Tablet
+                        li
+                          a(href='product-details.html') Laptop & Aksesoris
+                        li
+                          a(href='product-details.html') Komputer & Aksesoris
+                        li
+                          a(href='checkout.html') Elektronik
+                        li
+                          a(href='cart.html') Kamera,Foto & Video
+                        li
+                          a(href='login.html') Otomotif
+                        li
+                          a(href='login.html') Olahraga
+                      .col-sm-4
+                        li
+                          a(href='shop.html') Office & Stationery
+                        li
+                          a(href='product-details.html') Souvenir, Kado & Hadiah
+                        li
+                          a(href='product-details.html') Mainan & Hobi
+                        li
+                          a(href='checkout.html') Makanan & Minuman
+                        li
+                          a(href='cart.html') Buku
+                        li
+                          a(href='login.html') Software
+                        li
+                          a(href='login.html') Film,Musik & Game
+                      li
+                        a(href='login.html') Tampilkan Semua Kategori
+                  li
+                    form(action='/cekPencarian', method='get')
+                      input(type='text', placeholder='Cari....')
+                      select(name='pilihan',style='width:200px')
+                        option(value='barokah')  Semua Kategori
+                        option(value='barokah')  barokah 
+                        option(value='barokah1')  barokah 1
+                        option(value='barokah2')  barokah 2
+                      input(type='submit', value='cari')
+                  li
+                    a(href='#')
+                      i.fa.fa-user
+                      |  Daftar
+                  li
+                    a(href='cart.html')
+                      i.fa.fa-shopping-cart
+                      |  Bantuan
+                  li
+                    a.dropdown(href='#', data-toggle='dropdown')
+                      i.fa.fa-lock
+                      |  Masuk
+                    ul.dropdown-menu
+                      li
+                        .login-form
+                          // login form
+                          h2 Login to your account
+                          form(action='/ceklogin', method='post')
+                            input(type='text', placeholder='Name')
+                            input(type='email', placeholder='Email Address')
+                            span
+                              input.checkbox(type='checkbox')
+                              |                                 Keep me signed in
+                            button.btn.btn-default(type='submit') Login
+                        // /login form
+                  li  
+      // /header_top
+    // /header
+    br
+    br
+    section
+      .container
+        .row
+          .col-sm-1
+          .col-sm-10
+            p pembayaran -> ringkasan -> konfirmasi
+            block content
+append footer
+    footer#footer
+      // Footer
+      br
+      br
+      .footer-bottom
+        .container
+          .row
+            p.pull-left Copyright © 2013 E-SHOPPER Inc. All rights reserved.
+            p.pull-right
+              | Designed by 
+              span
+                a(target='_blank', href='http://www.themeum.com') Themeum
+    // /Footer
+    script(src='/javascripts/jquery.js')
+    script(src='/javascripts/bootstrap.min.js')
+    script(src='/javascripts/jquery.scrollUp.min.js')
+    script(src='/javascripts/price-range.js')
+    script(src='/javascripts/jquery.prettyPhoto.js')
+    script(src='/javascripts/main.js')
+ 
+
+   
