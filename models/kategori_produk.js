@@ -5,7 +5,8 @@
 
 module.exports = function(sequelize, DataTypes) {
     var Kategori_Produk = sequelize.define("Kategori_Produk", {
-            kategori : DataTypes.STRING
+            kategori : DataTypes.STRING,
+            deskripsi : DataTypes.STRING
         }
     );
 

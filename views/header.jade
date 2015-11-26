@@ -9,8 +9,11 @@ append header
                     .col-sm-1
                     .col-sm-2
                         .logo.pull-left
-                            a(href='/beranda')
-                                img(src='/images/home/logo.png', alt='')
+                            if (nama)
+                                a(href='/pengguna/beranda'): img(src='/images/home/logo.png', alt='')
+                            else
+                                a(href='/'): img(src='/images/home/logo.png', alt='')
+                                a(href='/pengguna/beranda') beranda
                     .col-sm-9
                         .mainmenu
                             ul.nav.navbar-nav
@@ -19,27 +22,37 @@ append header
                                         | Kategori
                                         i.fa.fa-angle-down
                                     ul.sub-menu(role='menu',style='width:250px')
-                                            li: a(href='#') Pakaian
-                                            li: a(href='#') Buku
-                                            li: a(href='#') Mainan & Hobi
-                                            li: a(href='#') Software
-                                            li: a(href='#') Film
-                                            li: a(href='#') Musik
-                                            li: a(href='#') Otomotif
-                                            li: a(href='#') Elektronik
-                                            li: a(href='#') Kamera
-                                            li: a(href='#') Laptop & Notebook
-                                            li: a(href='#') Tablet & Smartphone
-                                            li: a(href='#') Sepatu
+                                            li: a(href='/produk/daftarbykategori/1') Pakaian
+                                            li: a(href='/produk/daftarbykategori/2') Buku
+                                            li: a(href='/produk/daftarbykategori/3') Mainan & Hobi
+                                            li: a(href='/produk/daftarbykategori/5') Software
+                                            li: a(href='/produk/daftarbykategori/6') Film
+                                            li: a(href='/produk/daftarbykategori/7') Musik
+                                            li: a(href='/produk/daftarbykategori/8') Otomotif
+                                            li: a(href='/produk/daftarbykategori/9') Elektronik
+                                            li: a(href='/produk/daftarbykategori/10') Kamera
+                                            li: a(href='/produk/daftarbykategori/11') Laptop & Notebook
+                                            li: a(href='/produk/daftarbykategori/12') Tablet & Smartphone
+                                            li: a(href='/produk/daftarbykategori/13') Sepatu
                                 li
-                                    form(action='/cekPencarian', method='get')
-                                        input(type='text', placeholder='Cari Toko/Produk')
-                                        select(name='pilihan',style='width:200px')
-                                            option(value='barokah')  Semua Kategori
-                                            option(value='barokah')  barokah
-                                            option(value='barokah1')  barokah 1
-                                            option(value='barokah2')  barokah 2
-                                        input(type='submit', value='cari')
+
+                                        form(action='/cekPencarian', method='get')
+                                            input(type='text', placeholder='Cari Toko/Produk')
+                                            select(name='pilihan')
+                                                option  Semua Kategori
+                                                option(value='1')  Pakaian
+                                                option(value='2') Buku
+                                                option(value='3') Mainan & Hobi
+                                                option(value='5') Software
+                                                option(value='6') Film
+                                                option(value='7') Musik
+                                                option(value='8') Otomotif
+                                                option(value='9') Elektronik
+                                                option(value='10') Kamera
+                                                option(value='11') Laptop & Notebook
+                                                option(value='12') Tablet & Smartphone
+                                                option(value='13') Sepatu
+                                            input.btn-primary(type='submit', value='cari')
 
                                 if (nama)
                                     li
@@ -53,7 +66,9 @@ append header
                                             i.fa.fa-user
                                             |  Daftar
                                     li
-                                        a.dropdown(href='#', data-toggle='dropdown') Masuk
+                                        a.dropdown(href='#', data-toggle='dropdown')
+                                            i.fa.fa-sign-in
+                                            |  Masuk
                                         div.dropdown-menu
                                             form(method='post',style='padding : 20px')
                                                 p: input(type='text', placeholder='Email')

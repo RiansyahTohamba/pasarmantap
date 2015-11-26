@@ -8,6 +8,7 @@ module.exports = {
 
     registerRoutes: function(app) {
         app.get('/customer/register', this.register);
+        app.get();
     },
 
     register: function(req, res, next) {

@@ -1,246 +1,41 @@
 extends layout  
   
 append content
+            //hot list didapatkan dari yang paling terakhir didaftarkan(sort by id dan limit 3 teratas),begitu juga dengan kategori dibawahnya
+            //untuk sementara kategori dibawah tidak bisa dicustom,nantinya admin disediakan cara memilih kategori yang akan ditampilkan di halaman depan pengguna
             .features_items
               // features_items
               h2.title.text-center HOT LIST
-              .col-sm-4
-                .product-image-wrapper
-                  .single-products
-                    .productinfo.text-center
-                      img(src='/images/home/kucing.jpg', alt='')
-                      p
-                        span.col-sm-4.text-left.ellipsis
-                          b Kucing Persia
-                        span.text-right.ellipsis mulai dari Rp 1.000.000
-              .col-sm-4
-                .product-image-wrapper
-                  .single-products
-                    .productinfo.text-center
-                      img(src='/images/home/kucing.jpg', alt='')
-                      p
-                        span.col-sm-4.text-left.ellipsis
-                          b Kucing Persia
-                        span.text-right.ellipsis mulai dari Rp 1.000.000
-              .col-sm-4
-                .product-image-wrapper
-                  .single-products
-                    .productinfo.text-center
-                      img(src='/images/home/kucing.jpg', alt='')
-                      p
-                        span.col-sm-4.text-left.ellipsis
-                          b Kucing Persia
-                        span.text-right.ellipsis mulai dari Rp 1.000.000
-            // features_items
-            .category-tab
-              // category-tab
-              .col-sm-12
-                ul.nav.nav-tabs
-                  li
-                    a(href='#blazers', data-toggle='tab') Produk Toko Favorit
-                  li
-                    a(href='#sunglass', data-toggle='tab') Toko Favoritku
-                  li
-                    a(href='#kids', data-toggle='tab') produk yang terakhir dilihat
-                  li
-                    a(href='#poloshirt', data-toggle='tab') Wishlist
-              .tab-content
-                #tshirt.tab-pane.fade.active.in
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery1.jpg', alt='')
-                          h2 Rp 56.000
-                          .row-fluid
-                            span.col-sm-8
-                              b
-                                a(href='#') Easy Polo Black Edition
-                            span.text-right.ellipsis
-                              i.fa.fa-dribbble
-                              | jakarta
-                          hr
-                          i.fa.fa-star
-                          a(href='#') Barokah Clothing
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery1.jpg', alt='')
-                          h2 Rp 56.000
-                          .row-fluid
-                            span.col-sm-8
-                              b
-                                a(href='#') Easy Polo Black Edition
-                            span.text-right.ellipsis
-                              i.fa.fa-dribbble
-                              | jakarta
-                          hr
-                          i.fa.fa-star
-                          a(href='#') Barokah Clothing
-                #blazers.tab-pane.fade
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery4.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery3.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery2.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery1.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                #sunglass.tab-pane.fade
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery3.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery4.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                          img.new(src='/images/home/sale.png', alt='')
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery1.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery2.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                #kids.tab-pane.fade
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery1.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery2.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery3.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery4.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                #poloshirt.tab-pane.fade
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery2.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery4.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery3.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-                  .col-sm-3
-                    .product-image-wrapper
-                      .single-products
-                        .productinfo.text-center
-                          img(src='/images/home/gallery1.jpg', alt='')
-                          h2 $56
-                          p Easy Polo Black Edition
-                          a.btn.btn-default.add-to-cart(href='#')
-                            i.fa.fa-shopping-cart
-                            | Add to cart
-            // /category-tab punya toko favorit
+              each value in hotlist
+                .col-sm-4
+                  table(style='font-size:9pt')
+                      tr: td(colspan='2'): img(src='/images/hotlist/#{value.gambar}', width='250px')
+                      tr: td(width='110px'): b: a(href='cariproduk/#{value.nama}') #{value.nama}
+                          td mulai dari Rp #{value.harga_mulai}
+            br
+            br
+            br
+            .features_items
+              // features_items
+              h2.title.text-center SMARTPHONE TERLARIS
+              each value in smartphone
+                .col-sm-4
+                    table(style='font-size:9pt')
+                      tr: td(colspan='2'): img(src='/images/hotlist/#{value.gambar}', width='250px')
+                      tr: td(width='110px'): b: a(href='cariproduk/#{value.nama}') #{value.nama}
+                        td mulai dari Rp #{value.harga_mulai}
+            br
+            br
+            br
+            .features_items
+              // features_items
+              h2.title.text-center PAKAIAN TERLARIS
+              each value in pakaian
+                .col-sm-4
+                    table(style='font-size:9pt')
+                      tr: td(colspan='2'): img(src='/images/hotlist/#{value.gambar}', width='250px')
+                      tr: td(width='110px'): b: a(href='cariproduk/#{value.nama}') #{value.nama}
+                        td mulai dari Rp #{value.harga_mulai}
+            br
+            br
+            br

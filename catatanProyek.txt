@@ -1,2 +1,1 @@
-1. pastikan semua header sudah ter integrasi, jangan adalagi file header sesudah login,sebelum login, header pembayaran
-pada header ada icon keranjang yang menandakan jumlah barang belanjaang yang ada pada keranjang
+1. lihat contoh ethan-brown masalah session login

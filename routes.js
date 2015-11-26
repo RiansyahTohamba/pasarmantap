@@ -1,4 +1,7 @@
-var penggunaController = require('./controllers/pengguna.js');
+//var penggunaController = require('./controllers/pengguna.js');
+var pembelianController = require('./controllers/pembelian.js');
+var produkController = require('./controllers/produk.js');
+var penjualanController = require('./controllers/penjualan.js');
 var main = require('./handlers/main.js');
 
 module.exports = function(app){
@@ -8,14 +11,14 @@ module.exports = function(app){
 
 	//setelah login
 	app.get('/pengguna/beranda', main.beranda);
-	//app.get('/about', main.about);
-	//app.get('/',function(req, res, next) {
-	//	res.render('login', {
-	//		title: 'ecommerce Barokah | Login'
-	//	});
-	//});
 
-	// route pengguna
+	// route untuk data pengguna
 	//penggunaController.registerRoutes(app);
 
+	//route untuk data pembelian
+	pembelianController.registerRoutes(app);
+	//route untuk data produk
+	produkController.registerRoutes(app);
+	//route untuk data penjualan
+	penjualanController.registerRoutes(app);
 };

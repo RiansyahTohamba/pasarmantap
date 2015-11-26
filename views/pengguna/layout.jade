@@ -16,55 +16,24 @@ html(lang='en')
         .col-sm-2
           .left-sidebar
             #accordian.panel-group.category-products
-              // category-productsr
               .panel-default
-                a(href='#'): h5=nama
-                //| saldo e-cash Rp 0
-                a(href='#'): h5 Toko Barokah <br/>
-              //| Toko Reguler <br/> <a href='#'> Upgrade ke Gold </a>
+                a(href='#'): h5 Muh Riansyah
+                a(href='#'): b Toko Barokah <br/>
               .panel-default
                 ul.nav.nav-list
-                  //li.nav-header
-                  // h5
-                  //  b Kotak Masuk
-                  //li
-                  //  a(href='#') Pesan
-                  //li
-                  //  a(href='#') Diskusi Produk
-                  //li
-                  //  a(href='#') Review
-                  //li
-                  //  a(href='#') Notifikasi Harga
-                  //li
-                  //  a(href='#') Pusat Resolusi
-                  li.nav-header
-                    h5
-                      b Toko Saya
-                  li
-                    a(href='/penjualan/daftar') Penjualan
-                  li
-                    a(href='/produk/tambah') Tambah Produk
-                  li
-                    a(href='/produk/daftar') Daftar Produk
-                  //li
-                  //  a(href='#') Top Ads
-                  li
-                    a(href='/toko/pengaturan') Pengaturan Toko
-                  //li
-                  //  a(href='#') Pengaturan Admin
-                  li.nav-header
-                    h5
-                      b Profil Saya
-                  li
-                    a(href='/pembelian/daftar') Pembelian
-                  li
-                    a(href='/toko/favorit') Toko Favorit
-                  li
-                    a(href='#') Pengaturan
-            // /category-products
+                  li.nav-header: h5: b Toko Saya
+                  li: a(href='/penjualan/daftarpenjualan') Penjualan
+                  li: a(href='/produk/tambah') Tambah Produk
+                  li: a(href='/produk/daftar') Daftar Produk
+                  li: a(href='/toko/pengaturan') Pengaturan Toko
+                  li.nav-header: h5: b Profil Saya
+                  li: a(href='/pembelian/daftarpembelian') Pembelian
+                  li: a(href='/toko/favorit') Toko Favorit
+                  li: a(href='/produk/wishlist') Wish List
+                  li: a(href='#') Pengaturan
+            // konten disimpan di block content
         .col-sm-8.padding-right
           block content
-// /konten yang bersifat dinamis
 
 append footer
     footer#footer

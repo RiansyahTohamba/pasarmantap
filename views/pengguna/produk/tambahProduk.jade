@@ -13,8 +13,8 @@ append content
     td Kategori
     td 
      select(name='kategori')
-      each val in listKategori
-          option(value='#{val._id}') #{val.nama}         
+      each val in kategori_produk
+          option(value='#{val.id}') #{val.kategori}
     tr
     td Harga Pas/Buah
     td Rp <input type='number', name='berat'/>

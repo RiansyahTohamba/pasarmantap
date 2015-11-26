@@ -6,16 +6,22 @@
 
 module.exports = function(sequelize, DataTypes) {
     var Produk = sequelize.define("Produk", {
+            nama : DataTypes.STRING,
             harga : DataTypes.INTEGER,
             berat : DataTypes.INTEGER,
             gambar : DataTypes.STRING,
-            // bekas, baru
-            kondisi : DataTypes.INTEGER,
-            deskripsi : DataTypes.STRING,
+            kondisi : DataTypes.INTEGER,// bekas, baru
+            deskripsi : DataTypes.STRING
         }, {
             classMethods: {
                 associate: function(models) {
                     Produk.belongsTo(models.Kategori_Produk, {
+                        onDelete: "CASCADE",
+                        foreignKey: {
+                            allowNull: false
+                        }
+                    });
+                    Produk.belongsTo(models.Etalase, {
                         onDelete: "CASCADE",
                         foreignKey: {
                             allowNull: false

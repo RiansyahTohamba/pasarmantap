@@ -5,7 +5,7 @@ append content
             p(align='left'): b Pilih kategori
             each val in kategori_produk
                 .col-sm-4(align='left')
-                    li: a(href='#') #{val.kategori}
+                    li: a(href='/produk/daftarbykategori/#{val.id}') #{val.kategori}
         div(style='margin:50px 0')
         .row(style='width:900px')
             h2.title.text-center HOT LIST

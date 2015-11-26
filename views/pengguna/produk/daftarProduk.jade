@@ -1,58 +1,40 @@
-extends ../layout  
-  
+extends ../layout
+
 append content
- h3 Daftar Produk
- br 
- .col-sm-3
-    select(name='pilihan')
-     option(value='barokah')  Semua Kategori
-     option(value='barokah')  Semua Kategori
-     option(value='barokah')  Semua Kategori    
- .col-sm-3
-    select(name='pilihan')
-     option(value='barokah')  Semua Produk
-     option(value='barokah')  Semua Etalase
-     option(value='barokah')  Gudang
-     option(value='barokah')  Pengawasan
- .col-sm-3
-    select(name='pilihan')
-     option(value='barokah')  Semua Kondisi
-     option(value='barokah')  Baru
-     option(value='barokah')  Bekas 
- .col-sm-3
-    select(name='pilihan')     
-     option(value='barokah')  Dengan & Tanpa Gambar
-     option(value='barokah')  Tanpa Gambar
-     option(value='barokah')  Punya Gambar
-     
- hr
- br 
- each val,index in kategori 
-    if(kategori[index].produk.length == 0)
-     .alert.alert-danger  
-      center 
-       h4 
-        b Tidak Ada Produk                                     
-    script.    
+    h3 Daftar Produk
+    .row
+        .col-sm-3
+            select(name='pilihan')
+                option  Semua Kategori
+                each val in kategori_produk
+                    option(value='#{val.id}')  #{val.kategori}
+        .col-sm-3
+            select(name='pilihan')
+                option  Semua Etalase
+                each val in etalase
+                    option(value='#{val.id}')  #{val.nama}
+    .row
+        script.
             function numberFormat(_number, _sep) {
                 _number = typeof _number != "undefined" && _number > 0 ? _number : "";
-                _number = _number.replace(new RegExp("^(\\d{" + (_number.length%3? _number.length%3:0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
-                if(typeof _sep != "undefined" && _sep != " ") {
+                _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                if (typeof _sep != "undefined" && _sep != " ") {
                     _number = _number.replace(/\s/g, _sep);
                 }
                 return _number;
-            }      
+            }
+        table.table-bordered.table-hover(width='680px',style='margin : 15px')
+            each value,indexProduk in daftar_produk
+                tr(style='height : 100px')
+                    td(width='3%') <input type='checkbox'/>
+                    td(width='10%') <img src='/images/produk/#{value.gambar}' width='70px' height='70px' alt=''/>
+                    if(value.kondisi == '0')
+                        td(width='30%') #{value.nama} - bekas <br/>#{value.Kategori_Produk.kategori}
+                    else
+                        td(width='30%') #{value.nama} - baru <br/>#{value.Kategori_Produk.kategori}
+                    td(width='23%') #{value.Etalase.nama}
+                    td(width='20%') Rp <span class='uang'> </span>
+                    td <a href='/produk/ubah/buku/#{value.id}'> ubah</a> <p><a href='/produk/hapus/#{value.id}'> salin</a></p><p><a href='#'> hapus</a></p>
+                        script.
+                            document.getElementsByClassName("uang")[#{indexProduk}].innerHTML = numberFormat("#{value.harga}", ".");
 
-
-    table.table-bordered.table-hover
-     each value,indexProduk in kategori[index].produk             
-       tr(style='height : 90px')
-        td(width='3%') <input type='checkbox'/>
-        td(width='10%') <img src='/images/produk/#{value.gambar}' width='70px' height='70px' alt=''/>
-        td(width='30%') #{value.nama} - #{value.kondisi}
-           p #{kategori[index].nama}
-        td(width='28%') Etalase : buat model etalase (1 toko memiliki banyak etalase)
-        td(width='17%') Rp <span class='uang'> </span>
-        td <a href='/produk/ubah/buku/#{value._id}'> ubah</a> <p><a href='/produk/hapus/#{value._id}'> salin</a></p><p><a href='#'> hapus</a></p>
-            script.
-                document.getElementsByClassName("uang")[#{indexProduk}].innerHTML = numberFormat("#{value.harga}",".");
