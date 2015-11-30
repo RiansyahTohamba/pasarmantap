@@ -7,12 +7,12 @@
 module.exports = {
 
     registerRoutes: function(app) {
-        app.get('/customer/register', this.register);
-        app.get();
+        app.get('/pengguna/profil/:id', this.profil);
+
     },
 
-    register: function(req, res, next) {
-        res.render('customer/register');
+    profil : function(req, res, next) {
+        res.render('pengguna/profilDiri/profilPengguna');
     }
 
 };

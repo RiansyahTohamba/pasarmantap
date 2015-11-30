@@ -11,12 +11,18 @@ module.exports = function(sequelize, DataTypes) {
         }, {
             classMethods: {
                 associate: function(models) {
-                    //Pembayaran.belongsTo(models.Pasien, {
-                    //    onDelete: "CASCADE",
-                    //    foreignKey: {
-                    //        allowNull: false
-                    //    }
-                    //});
+                    Pengguna.belongsTo(models.Provinsi, {
+                        onDelete: "CASCADE",
+                        foreignKey: {
+                            allowNull: false
+                        }
+                    });
+                    Pengguna.belongsTo(models.Kabupaten, {
+                        onDelete: "CASCADE",
+                        foreignKey: {
+                            allowNull: false
+                        }
+                    });
                 }
             }
         }

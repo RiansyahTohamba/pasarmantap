@@ -5,37 +5,53 @@ append content
             //untuk sementara kategori dibawah tidak bisa dicustom,nantinya admin disediakan cara memilih kategori yang akan ditampilkan di halaman depan pengguna
             .features_items
               // features_items
+              script.
+                function numberFormat(_number, _sep) {
+                  _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                  _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                  if (typeof _sep != "undefined" && _sep != " ") {
+                    _number = _number.replace(/\s/g, _sep);
+                  }
+                  return _number;
+                }
               h2.title.text-center HOT LIST
-              each value in hotlist
+              each value,index in hotlist
                 .col-sm-4
                   table(style='font-size:9pt')
                       tr: td(colspan='2'): img(src='/images/hotlist/#{value.gambar}', width='250px')
                       tr: td(width='110px'): b: a(href='cariproduk/#{value.nama}') #{value.nama}
-                          td mulai dari Rp #{value.harga_mulai}
+                          td mulai dari Rp <span class='uang'> </span>
+                          script.
+                            document.getElementsByClassName("uang")[#{index}].innerHTML = numberFormat("#{value.harga_mulai}", ".");
             br
             br
             br
             .features_items
               // features_items
               h2.title.text-center SMARTPHONE TERLARIS
-              each value in smartphone
+              each value,indexSmartphone in smartphone
                 .col-sm-4
                     table(style='font-size:9pt')
                       tr: td(colspan='2'): img(src='/images/hotlist/#{value.gambar}', width='250px')
                       tr: td(width='110px'): b: a(href='cariproduk/#{value.nama}') #{value.nama}
-                        td mulai dari Rp #{value.harga_mulai}
+                        td mulai dari Rp <span class='uangSmartphone'> </span>
+                        script.
+                          document.getElementsByClassName("uangSmartphone")[#{indexSmartphone}].innerHTML = numberFormat("#{value.harga_mulai}", ".");
+
             br
             br
             br
             .features_items
               // features_items
               h2.title.text-center PAKAIAN TERLARIS
-              each value in pakaian
+              each value,indexPakaian in pakaian
                 .col-sm-4
                     table(style='font-size:9pt')
                       tr: td(colspan='2'): img(src='/images/hotlist/#{value.gambar}', width='250px')
                       tr: td(width='110px'): b: a(href='cariproduk/#{value.nama}') #{value.nama}
-                        td mulai dari Rp #{value.harga_mulai}
+                          td mulai dari Rp <span class='uangPakaian'> </span>
+                          script.
+                            document.getElementsByClassName("uangPakaian")[#{indexPakaian}].innerHTML = numberFormat("#{value.harga_mulai}", ".");
             br
             br
             br

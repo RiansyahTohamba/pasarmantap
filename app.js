@@ -33,37 +33,17 @@ app.use(session({
   saveUninitialized: true
 }));
 
-function checkAuth(req, res, next) {
-  if (!req.session.loggedin) {
-    res.send('kamu tidak dapat mengakses halaman ini kembali ke <a href="/">halaman login</a>');
-  } else {
-    next();
-  }
-};
-
-//
-////level user, pengaturan login ada di level ini
-//var pengguna = require('./routes/pengguna');
-//app.use('/',pengguna);
+app.use(function(req,res,next){
+  res.locals.session = req.session;
+  next();
+});
 
 require('./routes.js')(app);
 
-
-//var produk = require('./routes/produk');
-//app.use('/produk',produk);
-//
-//var toko = require('./routes/toko');
-//app.use('/toko',toko);
-//
-//var pembelian = require('./routes/pembelian');
-//app.use('/pembelian',pembelian);
-//
-//var penjualan = require('./routes/penjualan');
-//app.use('/penjualan',penjualan);
 ////level pelanggan
 //var pelanggan = require('./routes/pelanggan');
-//// app.use('/pelanggan',checkAuth, pelanggan); yang normal
-//app.use('/pelanggan', pelanggan);
+// app.use('/pelanggan',checkAuth, pelanggan); yang normal
+
 
 
 

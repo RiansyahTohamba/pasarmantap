@@ -4,11 +4,11 @@
 var models  = require('../models');
 module.exports = {
 
-    registerRoutes: function(app) {
-        app.get('/penjualan/daftarpenjualan',this.daftarPenjualan);
-        app.get('/penjualan/pesananbaru',this.pesananBaru);
-        app.get('/penjualan/konfirmasipengiriman',this.konfirmasiPengiriman);
-        app.get('/penjualan/statuspengiriman',this.statusPengiriman);
+    registerRoutes: function(app,checkAuth) {
+        app.get('/penjualan/daftarpenjualan',checkAuth,this.daftarPenjualan);
+        app.get('/penjualan/pesananbaru',checkAuth,this.pesananBaru);
+        app.get('/penjualan/konfirmasipengiriman',checkAuth,this.konfirmasiPengiriman);
+        app.get('/penjualan/statuspengiriman',checkAuth,this.statusPengiriman);
     },
 
     daftarPenjualan : function(req, res, next){

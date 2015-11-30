@@ -8,34 +8,24 @@ append content
                     li: a(href='/produk/daftarbykategori/#{val.id}') #{val.kategori}
         div(style='margin:50px 0')
         .row(style='width:900px')
+            script.
+                function numberFormat(_number, _sep) {
+                    _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                    _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                    if (typeof _sep != "undefined" && _sep != " ") {
+                        _number = _number.replace(/\s/g, _sep);
+                    }
+                    return _number;
+                }
             h2.title.text-center HOT LIST
-            .col-sm-4
-                .product-image-wrapper
-                    .single-products
-                        .productinfo.text-center
-                            img(src='/images/home/kucing.jpg', alt='')
-                            p
-                                span.col-sm-4.text-left.ellipsis
-                                    b Kucing Persia
-                                span.text-right.ellipsis mulai dari Rp 1.000.000
-            .col-sm-4
-                .product-image-wrapper
-                    .single-products
-                        .productinfo.text-center
-                            img(src='/images/home/kucing.jpg', alt='')
-                            p
-                                span.col-sm-4.text-left.ellipsis
-                                    b Kucing Persia
-                                span.text-right.ellipsis mulai dari Rp 1.000.000
-            .col-sm-4
-                .product-image-wrapper
-                    .single-products
-                        .productinfo.text-center
-                            img(src='/images/home/kucing.jpg', alt='')
-                            p
-                                span.col-sm-4.text-left.ellipsis
-                                    b Kucing Persia
-                                span.text-right.ellipsis mulai dari Rp 1.000.000
+            each value,index in hotlist
+                .col-sm-4
+                    table(style='font-size:9pt')
+                        tr: td(colspan='2'): img(src='/images/hotlist/#{value.gambar}', width='250px')
+                        tr: td(width='110px'): b: a(href='cariproduk/#{value.nama}') #{value.nama}
+                            td mulai dari Rp <span class='uang'> </span>
+                            script.
+                                document.getElementsByClassName("uang")[#{index}].innerHTML = numberFormat("#{value.harga_mulai}", ".");
         div(style='margin:50px 0')
         .row(style='width:900px',align='left')
             h3 Tokopedia - Jual Beli Online Aman dan Nyaman <br>

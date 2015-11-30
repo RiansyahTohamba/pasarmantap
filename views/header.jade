@@ -9,11 +9,10 @@ append header
                     .col-sm-1
                     .col-sm-2
                         .logo.pull-left
-                            if (nama)
-                                a(href='/pengguna/beranda'): img(src='/images/home/logo.png', alt='')
+                            if (session.nama)
+                                a(href='/pengguna/beranda'): img(src='/images/logoPasarMantap.png', width='120px')
                             else
-                                a(href='/'): img(src='/images/home/logo.png', alt='')
-                                a(href='/pengguna/beranda') beranda
+                                a(href='/'): img(src='/images/logoPasarMantap.png', width='120px')
                     .col-sm-9
                         .mainmenu
                             ul.nav.navbar-nav
@@ -52,14 +51,14 @@ append header
                                                 option(value='11') Laptop & Notebook
                                                 option(value='12') Tablet & Smartphone
                                                 option(value='13') Sepatu
-                                            input.btn-primary(type='submit', value='cari')
+                                            input.btn-inverse(type='submit', value='cari')
 
-                                if (nama)
+                                if (session.nama)
                                     li
                                         a.dropdown(href='#', data-toggle='dropdown')
                                             img(src='/images/default-user-photo.png',width='30')
                                         div.dropdown-menu
-                                            a.dropdown(href='#', data-toggle='dropdown') keluar
+                                            a(href='/keluar') keluar
                                 else
                                     li
                                         a(href='#')
@@ -70,9 +69,9 @@ append header
                                             i.fa.fa-sign-in
                                             |  Masuk
                                         div.dropdown-menu
-                                            form(method='post',style='padding : 20px')
-                                                p: input(type='text', placeholder='Email')
-                                                p: input(type='password', placeholder='Sandi')
+                                            form(method='post',style='padding : 20px',action='/ceklogin')
+                                                p: input(name='email', type='text', placeholder='Email')
+                                                p: input(name='sandi',type='password', placeholder='Sandi')
                                                 p: input.btn.btn-primary(type='submit' value='Masuk')
 
 

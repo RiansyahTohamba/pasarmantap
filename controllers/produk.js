@@ -5,16 +5,16 @@ var models  = require('../models');
 var async  = require('async');
 module.exports = {
 
-    registerRoutes: function(app) {
+    registerRoutes: function(app,checkAuth) {
         //ada daftar produk untuk penjual ada untuk pembelian
 
         //fitur untuk pembeli
         app.get('/produk/daftarbykategori/:idKategori',this.daftarByKategori);
-        app.get('/produk/detail/:idProduk',this.detailProduk);
+        app.get('/produk/detail/:id',this.detailProduk);
 
         //fitur untuk penjual
-        app.get('/produk/tambah',this.tambahProduk);
-        app.get('/produk/daftar',this.daftarProduk);
+        app.get('/produk/tambah',checkAuth,this.tambahProduk);
+        app.get('/produk/daftar',checkAuth,this.daftarProduk);
     },
 
     daftarByKategori : function(req, res, next){
@@ -51,9 +51,21 @@ module.exports = {
 
 
     detailProduk : function(req, res, next){
-        res.render('', {
-
-        });
+        models.Produk.find({
+            where : {
+                id : req.params.id
+            },
+            include: [
+                { model: models.Etalase, include: [
+                    { model: models.Toko }
+                ]}
+            ],
+            attributes: {exclude : ['Toko.deskripsi'] }
+        }).then(function(produk) {
+                res.render('pengguna/produk/detailProduk',{
+                    produk : produk
+                });
+            })
     },
 
     tambahProduk : function(req, res, next){

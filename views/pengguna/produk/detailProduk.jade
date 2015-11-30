@@ -1,49 +1,74 @@
-extends ../layoutBelanja  
+extends ../layoutBelanja
   
 append content
-  if(produk.length == 0)
+  if(!produk)
      .alert.alert-danger  
       center 
        h4 
         b Tidak Ada Produk                                           
-  else      
-  .col-sm-3
-      table
-        tr
-          td(colspan='4') <img src='/images/produk/#{produk[0].gambar}' width='250'>
-        tr
-          td(height='160') <img src='/images/produk/#{produk[0].gambar}' width='80'>
-          td <img src='/images/produk/#{produk[0].gambar}' width='80'>
-          td <img src='/images/produk/#{produk[0].gambar}' width='80'>
+  else
+  .row
+      .col-sm-1
+      .col-sm-3
+          table
+            tr
+              td(colspan='4') <img src='/images/produk/#{produk.gambar}' width='250'>
+            tr
+              td(height='160') <img src='/images/produk/#{produk.gambar}' width='80'>
+              td <img src='/images/produk/#{produk.gambar}' width='80'>
+              td <img src='/images/produk/#{produk.gambar}' width='80'>
 
-  .col-sm-5
-      p <a href='/produk/caridaftar/#{kategori.url}'>#{kategori.nama} </a> > <a href='#'> #{produk[0].nama}</a>
-      table
-        tr                       
-          td <h1>  #{produk[0].nama} </h1>
-            | <h2> Rp <span id='uang'> </span></h2>            
-            | <a href='/pembelian/keranjangbelanja' class='btn btn-primary'>beli</a> <br/><br/>
-            | <p>Terjual : ambil dari data penjualan </p>
-            | <p>Asuransi : tipe booelean</p>
-            | <p>Berat : #{produk[0].berat} satuan berat </p>
-            | <p>Kondisi : #{produk[0].kondisi} //tipe booelean</p>
-            | <p>Minimal Pemesanan : undifined</p>
-            | <p>Deskripsi : #{produk[0].deskripsi}</p>
-          script.
-            function numberFormat(_number, _sep) {
-                _number = typeof _number != "undefined" && _number > 0 ? _number : "";
-                _number = _number.replace(new RegExp("^(\\d{" + (_number.length%3? _number.length%3:0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
-                if(typeof _sep != "undefined" && _sep != " ") {
-                    _number = _number.replace(/\s/g, _sep);
+      .col-sm-4
+          p <a href='/produk/daftar/#{produk.id}'>#{produk.id} </a> > <a href='#'> #{produk.nama}</a>
+          table
+            tr
+              td: h1=produk.nama
+                | <h2> Rp <span id='uang'> </span></h2>
+                p: a.btn.btn-primary(href='/pembelian/keranjangbelanja/#{produk.id}'): i.fa.fa-shopping-cart  Beli
+                | <a href='/produk/jadikanwishlist/#{produk.id}' class='btn btn-primary'>Tambahkan ke wishlist</a> <br/><br/>
+                | <p>Terjual : ambil dari data penjualan </p>
+                | <p>Berat : #{produk.berat} gr </p>
+                if (produk.kondisi == 1)
+                    | <p>Kondisi : Baru </p>
+                else
+                    | <p>Kondisi : Bekas </p>
+              script.
+                function numberFormat(_number, _sep) {
+                    _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                    _number = _number.replace(new RegExp("^(\\d{" + (_number.length%3? _number.length%3:0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                    if(typeof _sep != "undefined" && _sep != " ") {
+                        _number = _number.replace(/\s/g, _sep);
+                    }
+                    return _number;
                 }
-                return _number;
-            }      
-            document.getElementById("uang").innerHTML = numberFormat("#{produk[0].harga}",".");
-  .col-sm-3
-   h3 Informasi toko            
-   p <a href='#'>Barokah Clothing </a>
-   p <a href='#'>Jakarta </a>
-   p Kecepatan 
-   p Akurasi
-   p Pelayanan
-   p Dukungan Pengiriman
+                document.getElementById("uang").innerHTML = numberFormat("#{produk.harga}",".");
+      .col-sm-3(style='margin : 0 30px')
+           h3 Informasi toko
+           table
+               tr: td(rowspan='4',width='110px')
+                    a(href='/toko/#{produk.Etalase.Toko.id}'): img(src='/images/#{produk.Etalase.Toko.logo}', width='100px')
+               tr: td: a(href='#') #{produk.Etalase.Toko.nama}
+               tr: td #{produk.Etalase.Toko.lokasi}
+               tr: td: a.btn-primary.btn(href='produk/favorit/#{produk.Etalase.Toko.id}') Jadikan Favorit
+  .row
+      .col-sm-1
+      .category-tab
+            // category-tab
+            .col-sm-8
+                ul.nav.nav-tabs
+                    li: a(href='#deskripsi' data-toggle='tab') Deskripsi Produk
+                    li: a(href='#review' data-toggle='tab') Review
+                    li: a(href='#diskusi' data-toggle='tab') Diskusi Produk
+                .tab-content
+                    #deskripsi.tab-pane.fade.active.in
+                        .col-sm-3
+                            p #{produk.deskripsi}
+                    #review.tab-pane.fade
+                        .col-sm-3
+                            p review produk
+                    #diskusi.tab-pane.fade
+                        .col-sm-3
+                            p diskusi produk
+
+  br
+  br
