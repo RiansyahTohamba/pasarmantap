@@ -6,12 +6,12 @@
 
 module.exports = function(sequelize, DataTypes) {
     var Produk = sequelize.define("Produk", {
-            nama : DataTypes.STRING,
-            harga : DataTypes.INTEGER,
-            berat : DataTypes.INTEGER,
-            gambar : DataTypes.STRING,
-            kondisi : DataTypes.INTEGER,// bekas, baru
-            deskripsi : DataTypes.STRING
+            nama: DataTypes.STRING,
+            harga: DataTypes.INTEGER,
+            berat: DataTypes.INTEGER,
+            gambar: DataTypes.STRING,
+            kondisi: DataTypes.INTEGER,// bekas, baru
+            deskripsi: DataTypes.STRING
         }, {
             classMethods: {
                 associate: function(models) {
