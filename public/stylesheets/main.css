@@ -6,10 +6,43 @@ body {
   font-family: 'Roboto', sans-serif;
   font-size: 10pt;  
   position: relative;
-  font-weight:400px;
-  background: #f8f8f8
+  background: #fcfcfc
+  /*background: white*/
+}
+.btn-file {
+  position: relative;
+  overflow: hidden;
+}
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 999px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
 }
 
+.category-button {
+  border: 1px solid #cecece;
+  padding: 7px 5px 7px 5px;
+  color: #666;
+  border-radius: 3px;
+}
+.row-category{
+  height : 37px
+}
+.row-fluid .span6{
+  float: left;
+  width:48.93617021276595%;
+  margin : 2px;
+}
 ul li {
   list-style: none;
 }
@@ -65,11 +98,25 @@ a#scrollUp i{
 /*************************
 *******Header CSS******
 **************************/
-
-.header_top {
-  background: none repeat scroll 0 0 #F0F0E9;
+#headerMobile{
+  background-color: #111111;
 }
 
+.header_top {
+  background: none repeat scroll 0 0 #555500;
+}
+.headerPasar{
+  margin : 0 auto;
+  width: 100%;
+  background-color: #fcfcfc;
+  /*background-color: white;*/
+  padding : 5px 0;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
+  z-index: 99;
+}
+.containerIsiBelanja{
+  margin: 0px 110px;
+}
 .contactinfo ul li:first-child{
     margin-left: -15px;
 }
@@ -141,6 +188,7 @@ a#scrollUp i{
   margin-right: 0;
   padding-bottom: 20px;
   padding-top: 20px;
+
 }
 
 .header-middle .container .row .col-sm-4{
@@ -959,7 +1007,6 @@ h2.title {
 
 .category-tab ul {
   background: #40403E;
-  border-bottom: 1px solid #FE980F;
   list-style: none outside none;
   margin: 0 0 30px;
   padding: 0;
@@ -969,7 +1016,7 @@ h2.title {
 .category-tab ul li a {
   border: 0 none;
   border-radius: 0;
-  color: #B3AFA8;
+  color: #fcfffa;
   display: block;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
@@ -977,7 +1024,7 @@ h2.title {
 }
 
 .category-tab ul  li  a:hover{
-	background:#FE980F;
+    background: rgb(61, 119, 187);
 	color:#fff;
 }
 
@@ -986,7 +1033,7 @@ h2.title {
   -moz-border-left-colors: none;
   -moz-border-right-colors: none;
   -moz-border-top-colors: none;
-  background-color: #FE980F;
+  background: rgb(61, 119, 187);
   border:0px;
   color: #FFFFFF;
   cursor: default;
