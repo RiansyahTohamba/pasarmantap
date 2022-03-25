@@ -1,0 +1,100 @@
+
+extends layoutAdmin
+append content
+    script.
+        $(document).ready(function () {
+            $('#dataTables-example').dataTable();
+        });
+    if(status != 6)    
+        center: h3 Invoice Dalam Proses Pengiriman
+    else    
+        center: h3 Barang Sudah Diterima
+    .row
+        script.
+            function numberFormat(_number, _sep) {
+                _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                if (typeof _sep != "undefined" && _sep != " ") {
+                    _number = _number.replace(/\s/g, _sep);
+                }
+                return _number;
+            }
+
+        if(invoice.length == 0)
+            .alert.alert-danger
+                center
+                    h4: b Tidak ada verifikasi pembayaran
+        else
+            .alert.alert-warning
+                center
+                    b pengiriman dibatalkan jika kurir gagal mengirim barang
+            each value,index in invoice
+                .modal.fade(class='modal-buktipembayaran#{index}' tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+                    .modal-dialog
+                        .modal-content
+                            .modal-header
+                                h4 Bukti Bayar
+                            .modal-body(style='padding: 40px')
+                                center: img(src='/images/buktiPembayaran/#{value.gambar_bukti_pembayaran}' width='350px')
+                .modal.fade(class='modal-detail-invoice#{index}' tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+                    .modal-dialog
+                        .modal-content
+                            .modal-header
+                                h4 Detail Transaksi
+                            .modal-body(style='padding: 40px')
+                                each produk,indexProduk in value.Produks
+                                    table.table.table-striped.table-bordered
+                                        tr
+                                            td(height='70px' colspan='2')
+                                                span.pull-left(style='padding : 0 10px 0 10px')
+                                                    img(src='/images/Produk/#{produk.gambar}' width='30px')
+                                                span.pull-left
+                                                    b  #{produk.nama}
+                                                    br
+                                                    b(style='font-size : 8pt') #{produk.Invoice_Produk.jumlah_produk} Barang x Rp <span id='uangPerProduk#{index}#{indexProduk}'></span>
+                                                    script.
+                                                        document.getElementById("uangPerProduk#{index}#{indexProduk}").innerHTML = numberFormat("#{produk.harga}", ".");
+                                            td
+                                                b  Harga Barang <br>
+                                                //TODO:   jumlah x #{value.Produks.harga}, dibuat dalam format uang juga
+                                                | Rp <span id='hargaDikaliJumlah#{index}#{indexProduk}'></span> <br>
+                                                script.
+                                                    document.getElementById("hargaDikaliJumlah#{index}#{indexProduk}").innerHTML = numberFormat("" + (#{produk.harga} * #{produk.Invoice_Produk.jumlah_produk}), ".");
+                                center: b  Ongkos Kirim Rp <span id='ongkosKirim#{index}'></span>
+                                script.
+                                    document.getElementById("ongkosKirim#{index}").innerHTML = numberFormat("" + #{value.ongkos_kirim}, ".");
+
+            .col-sm-10(style='margin : 0 80px')
+                    table(style="margin:0 10px ;width : 740px").table.table-striped.table-bordered.table-hover#dataTables-example
+                        thead.panel.panel-primary
+                            tr.panel.panel-primary
+                                th No Resi
+                                th Pembelian oleh 
+                                th Pengiriman
+                                th Transaksi
+                                th Aksi
+                        tbody
+                            each value,indexInv in invoice
+                                tr(style='height : 20px')
+                                        td(width='20%'): b=value.no_resi
+                                        td(width='20%'): b=value.Pengguna.nama
+                                        td: a(href='/toko/profil/#{value.Toko.id}')  #{value.Toko.nama}
+                                        td
+                                            b Total Harga
+                                            h4 Rp <span id='totalHarga#{indexInv}'> </span>
+                                            a(href='#' data-toggle='modal' data-target='.modal-detail-invoice#{indexInv}') detail transaksi
+                                            script.
+                                                document.getElementById("totalHarga#{indexInv}").innerHTML = numberFormat("#{value.total_harga}", ".");
+
+                                        td
+                                            if(status != 6)    
+                                                a(href='/admin/batalkanpengiriman/#{value.id}').btn.btn-primary Batalkan pengiriman
+                                            else    
+                                                p barang sudah sampai
+
+                        script(src='/javascripts/dataTables/dataTables.bootstrap.js')
+                        script(src='/javascripts/dataTables/jquery.dataTables.js')
+                        script.
+                            $(document).ready(function () {
+                                $('#dataTables-example').dataTable();
+                            });

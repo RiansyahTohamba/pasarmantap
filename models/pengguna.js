@@ -5,24 +5,16 @@
 
 module.exports = function(sequelize, DataTypes) {
     var Pengguna = sequelize.define("Pengguna", {
-            nama : DataTypes.STRING,
             email : DataTypes.STRING,
             sandi : DataTypes.STRING,
+            nama : DataTypes.STRING,
+            jenis_kelamin : DataTypes.INTEGER,
+            foto : DataTypes.STRING
         }, {
             classMethods: {
                 associate: function(models) {
-                    Pengguna.belongsTo(models.Provinsi, {
-                        onDelete: "CASCADE",
-                        foreignKey: {
-                            allowNull: false
-                        }
-                    });
-                    Pengguna.belongsTo(models.Kabupaten, {
-                        onDelete: "CASCADE",
-                        foreignKey: {
-                            allowNull: false
-                        }
-                    });
+                    Pengguna.belongsTo(models.Toko);
+                    Pengguna.hasMany(models.Penerima);
                 }
             }
         }

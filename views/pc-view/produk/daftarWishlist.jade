@@ -1,0 +1,28 @@
+extends ../layout
+  
+append content
+    script.
+            function numberFormat(_number, _sep) {
+                _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                _number = _number.replace(new RegExp("^(\\d{" + (_number.length%3? _number.length%3:0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                if(typeof _sep != "undefined" && _sep != " ") {
+                    _number = _number.replace(/\s/g, _sep);
+                }
+                return _number;
+            }
+
+    div
+    if(wishList.length == 0)
+        .alert.alert-danger: center: h4 Tidak ada produk yang terdaftar
+    else
+        h2 Wish List
+        .row(style='height:10px')
+        each value,n in wishList
+            div(style='width:160px;height:270px;float:left')
+                | <a href='/produk/detail/#{value.ProdukId}'>
+                | <img src='/images/produk/#{value.Produk.gambar}', style='height: 150px;width:140px'/> <br/> </a>
+                | <h4> Rp <span class='uang-wishlist'> </h4>
+                | <a href='/produk/detail/#{value.Produk.id}'> #{value.Produk.nama} </a><br/>
+                | <i class='fa fa-flag'></i>  #{value.Produk.Toko.Kabupaten.nama} <br/><a href='/toko/profil/#{value.Produk.Toko.id}'> #{value.Produk.Toko.nama} </a>
+                script.
+                    document.getElementsByClassName("uang-wishlist")[#{n}].innerHTML = numberFormat("#{value.Produk.harga}", ".");

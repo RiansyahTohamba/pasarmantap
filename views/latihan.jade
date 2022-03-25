@@ -1,0 +1,13 @@
+p: a(href='/tes-sesi') masuk
+p: a(href='/hapus-sesi') keluar
+//variabel session mengacu ke res.locals.session
+//p='isi cart : '+session.jumlahIsiCart
+p='isi cart : '+(session.cart).length
+p='penggunaId : '+session.penggunaId
+p='nama : '+session.nama
+p='tokoId : '+session.tokoId
+p='nama toko : '+session.namaToko
+if(!session.loggedIn)
+   p='belum login'
+else
+   p='sudah login'

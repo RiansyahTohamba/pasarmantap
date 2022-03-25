@@ -1,0 +1,24 @@
+//
+   Created by riansyahPC on 12/15/2015.
+html
+   head
+      title halaman baru
+      link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
+   body
+      center
+      .section.section-primary(style='height:800px')
+         .row
+            center: h1 Login
+         .row
+            center
+
+                  table.table(style='width:400px')
+                     tr: td: label.control-label Id
+                        td
+                     tr: td: label.control-label Sandi
+                        select.form-control(name='idPoliklinik')
+                              option(value='1') Rian
+
+
+                     td <input id='idPasien' name='idPasien' type='password' class='form-control'/> </td>
+                     tr: td( colspan='2' align='center'):  input.btn.btn-info.btn-lg(type='submit' id='simpan' value='masuk')

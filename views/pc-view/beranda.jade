@@ -1,0 +1,63 @@
+extends layout  
+  
+append content
+            //untuk sementara kategori dibawah tidak bisa dicustom,nantinya admin disediakan cara memilih kategori yang akan ditampilkan di halaman depan pengguna
+            .features_items
+              // features_items
+              script.
+                function numberFormat(_number, _sep) {
+                  _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                  _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                  if (typeof _sep != "undefined" && _sep != " ") {
+                    _number = _number.replace(/\s/g, _sep);
+                  }
+                  return _number;
+                }
+              h2.title.text-center HOT LIST
+              each value,index in hotlist
+                .col-sm-4
+                  table(style='font-size:9pt')
+                      tr: td(colspan='2'): a(href='/produk/detail/#{value.Produk.id}'): img(src='/images/produk/#{value.Produk.gambar}',
+                            width='170px' height='150px')
+                      tr: td(width='70px'): b: a(href='/produk/detail/#{value.Produk.id}') #{value.Produk.nama}
+                          td Harga Rp <span class='uang'> </span>
+                          script.
+                            document.getElementsByClassName("uang")[#{index}].innerHTML = numberFormat("#{value.Produk.harga}", ".");
+                  br
+                  br
+            //todo: rencana kedepan, rekomendasi toko favorit
+            //br
+            //br
+            //br
+            //.features_items
+            //  h2.title.text-center Rekomendasi Dari Toko Favorit
+
+            //.features_items
+            //  // features_items
+            //  h2.title.text-center SMARTPHONE TERLARIS
+            //  each value,indexSmartphone in smartphone
+            //    .col-sm-4
+            //        table(style='font-size:9pt')
+            //          tr: td(colspan='2'): a(href='/produk/detail/#{value.Produk.id}'): img(src='/images/produk/#{value.Produk.gambar}', width='200px',height='180px')
+            //          tr: td(width='110px'): b: a(href='/produk/detail/#{value.Produk.id}') #{value.Produk.nama}
+            //            td Harga Rp <span class='uangSmartphone'> </span>
+            //            script.
+            //              document.getElementsByClassName("uangSmartphone")[#{indexSmartphone}].innerHTML = numberFormat("#{value.Produk.harga}", ".");
+            //
+            //br
+            //br
+            //br
+            //.features_items
+            //  // features_items
+            //  h2.title.text-center PAKAIAN TERLARIS
+            //  each value,indexPakaian in pakaian
+            //    .col-sm-4
+            //        table(style='font-size:9pt')
+            //          tr: td(colspan='2'): a(href='/produk/detail/#{value.Produk.id}'): img(src='/images/produk/#{value.Produk.gambar}', width='200px',height='180px')
+            //          tr: td(width='110px'): b: a(href='/produk/detail/#{value.Produk.id}') #{value.Produk.nama}
+            //              td Harga Rp <span class='uangPakaian'> </span>
+            //              script.
+            //                document.getElementsByClassName("uangPakaian")[#{indexPakaian}].innerHTML = numberFormat("#{value.Produk.harga}", ".");
+            //br
+            //br
+            //br

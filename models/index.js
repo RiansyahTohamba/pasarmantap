@@ -6,6 +6,9 @@ var Sequelize = require("sequelize");
 var env       = process.env.NODE_ENV || "development";
 //atributnya nama database, user , password...
 var sequelize = new Sequelize('pasarmantap', 'root', '', {
+  dialectOptions: {
+    multipleStatements: true
+  },
   host: '127.0.0.1',
   dialect: 'mysql',
   pool: {

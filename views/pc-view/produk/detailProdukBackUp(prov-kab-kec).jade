@@ -1,0 +1,212 @@
+//sebelum menggunakan API,data provinsi-kab-kecamatan menggunakan database local
+// view detailProduk terbaru menggunakan API RajaOngkir,sehingga data provinsi-kabupaten dari API
+
+extends ../layoutBelanja
+append content
+    .row
+        .col-sm-1
+        .col-sm-3
+            //.modal.fade
+            //.modal.fade.modal-beli(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+            .modal-beli(tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+                .modal-dialog.modal-sm
+                    .modal-content
+                        .modal-header
+                            h4 Beli
+                        .modal-body(style='padding: 40px')
+                            form(method='post',action='/keranjang/tambah')
+                                .row
+                                    table(width=530)
+                                        tr
+                                          td <b style='font-size : 8pt'> Nama Produk </b><br> #{toko.Produk[0].nama}
+                                              | <input type="hidden" name="idProduk" value="#{toko.Produk[0].id}">
+                                          td &nbsp;
+                                          td Keterangan (Opsional)
+                                              textarea(rows=3 width=300)
+                                        tr
+                                          td(style='padding: 0 10px 0px 0px') Jumlah Barang
+                                            | <input id='jumlah' type='number' onkeyup="hitung()" name='jumlah' required=true>
+                                          td(width=150) Harga Barang <br> Rp <span id='harga'></span>
+                                          td(width=150) Total Harga Barang <br> Rp <span id='total'></span> <input id='totalHarga' type='hidden' name='totalHarga' >
+                                              script(type='text/javascript').
+                                                  function numberFormat(_number, _sep) {
+                                                      _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                                                      _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                                                      if (typeof _sep != "undefined" && _sep != " ") {
+                                                          _number = _number.replace(/\s/g, _sep);
+                                                      }
+                                                      return _number;
+                                                  }
+                                                  function hitung() {
+                                                      var total = document.getElementById('total');
+                                                      var jumlah = document.getElementById('jumlah');
+                                                      var totalHarga = document.getElementById('totalHarga');
+                                                      var hasil_kali = #{toko.Produk[0].harga} * jumlah.value;
+                                                      total.innerHTML = numberFormat(hasil_kali+"",".");
+                                                      //untuk mendapatkan nilai integer yang akan di insert ke table invoice
+                                                      totalHarga.value = hasil_kali;
+                                                  }
+                                                  var harga = document.getElementById('harga');
+                                                  harga.innerHTML = numberFormat("#{toko.Produk[0].harga}", ".");
+                                        //batas form pembelian
+                                hr
+                                .row
+                                    script(type='text/javascript').
+                                        $(document).ready(function () {
+                                            $("#provinsi").change(function () {
+                                                $.ajax({
+                                                    type: 'GET',
+                                                    url: '/getkabupaten/' + $('#provinsi option:selected').val(),
+                                                    success: function (result) {
+                                                        $('#kabupaten').empty();
+                                                        $('#kecamatan').empty();
+                                                        $('#kabupaten').append(result.listArr)
+                                                    }
+                                                })
+                                            });
+                                            $("#kabupaten").change(function () {
+                                                $.ajax({
+                                                    type: 'GET',
+                                                    url: '/getkecamatan/' + $('#kabupaten option:selected').val(),
+                                                    success: function (result) {
+                                                        $('#kecamatan').empty();
+                                                        $('#kecamatan').append(result.listArr)
+                                                    }
+                                                })
+                                            });
+                                        });
+                                        $(document).ready(function () {
+                                            $("#tampilkanFormPenerima").click(function () {
+                                                $("#formPenerima").toggle();
+                                            });
+                                        });
+
+                                    //if(!penerima)
+                                    if(penerima)
+                                        div
+                                            table
+                                                tr
+                                                    td(colspan='3' height=70) Simpan Alamat Sebagai <br/> <input name='' type='text' required="required"> *contoh : alamat rumah,alamat teman...
+                                                tr
+                                                    td(height=40) Nama Penerima <br/> <input name='nama' type='text' required="required">
+                                                        | <input name='idPenerima' type='hidden' required="required">
+                                                    td No. Hp Penerima <br/> <input name='telepon' type='text' required="required">
+                                                    td Kode Pos <br/> <input name='kode_pos' type='text' required="required">
+                                                     // | <input name='penerimaId' type='hidden' value='1'>
+                                                    //nanti penerimanya di retrieve
+                                                tr: td(colspan='3' height=70) Alamat <br/>
+                                                        textarea(name='alamat' cols='60')
+                                                tr
+                                                    td(height=70) <b> Provinsi </b>
+                                                        select#provinsi(required=true,style='font-size:8pt',name='idProvinsi')
+                                                            //masalah menampilkan id di view cart
+                                                            option pilih provinsi
+                                                            each val in provinsi
+                                                                option(value='#{val.id}') #{val.nama}
+                                                    td <b> Kotamadya/Kabupaten </b>
+                                                        select#kabupaten(required=true,style='font-size:8pt',name='idKabupaten')
+                                                            option(disabled) pilih kabupaten/kota
+                                                    td <b> Kecamatan </b><br>
+                                                        select#kecamatan(required=true,style='font-size:8pt',name='idKecamatan')
+                                                            option(disabled) pilih kecamatan
+                                    else
+                                        #formPenerima(style='display:none')
+                                            table
+                                                tr
+                                                    td(colspan='3' height=70) Simpan Alamat Sebagai <br/> <input name='' type='text' required="required"> *contoh : alamat rumah,alamat teman...
+                                                tr
+                                                    td(height=40) Nama Penerima <br/> <input name='nama' type='text' required="required">
+                                                        | <input name='idPenerima' type='hidden' required="required">
+                                                    td No. Hp Penerima <br/> <input name='telepon' type='text' required="required">
+                                                    td Kode Pos <br/> <input name='kode_pos' type='text' required="required">
+                                                        // | <input name='penerimaId' type='hidden' value='1'>
+                                                    //nanti penerimanya di retrieve
+                                                tr: td(colspan='3' height=70) Alamat <br/>
+                                                    textarea(name='alamat' cols='60')
+                                                tr
+                                                    td(height=70) <b> Provinsi </b>
+                                                        select#provinsi(required=true,style='font-size:8pt',name='idProvinsi')
+                                                            //masalah menampilkan id di view cart
+                                                            option pilih provinsi
+                                                            each val in provinsi
+                                                                option(value='#{val.id}') #{val.nama}
+                                                    td <b> Kotamadya/Kabupaten </b>
+                                                        select#kabupaten(required=true,style='font-size:8pt',name='idKabupaten')
+                                                            option(disabled) pilih kabupaten/kota
+                                                    td <b> Kecamatan </b><br>
+                                                        select#kecamatan(required=true,style='font-size:8pt',name='idKecamatan')
+                                                            option(disabled) pilih kecamatan
+                                        button#tampilkanFormPenerima tambah alamat baru
+                                        each val in penerima
+                                            div(style='width:160px;height:270px;float:left;border : 1px solid black')
+                                                p #{val.nama}
+                                                p #{val.alamat}
+
+                                center: input.btn.btn-primary(type='submit' value='Beli Produk Ini')
+                        br
+            table
+                tr
+                    td(colspan='4') <img src='/images/produk/#{toko.Produk[0].gambar}' width='250'>
+                //daftar gambar produk
+              //tr
+              //  td(height='160') <img src='/images/produk/#{toko.Produk[0].gambar}' width='80'>
+              //  td <img src='/images/produk/#{toko.Produk[0].gambar}' width='80'>
+              //  td <img src='/images/produk/#{toko.Produk[0].gambar}' width='80'>
+
+        .col-sm-4
+            p <a href='/produk/daftar/#{toko.Produk[0].id}'>#{toko.Produk[0].Kategori_Produk.kategori} </a> > <a href='#'> #{toko.Produk[0].nama}</a>
+            table
+              tr
+                td: h1 skenario detailproduk - cart ada dibuku tulis
+                td: h1=toko.Produk[0].nama
+                  | <h2> Rp <span id='uang'> </span></h2>
+                  p: a.btn.btn-primary(data-toggle='modal', data-target='.modal-beli'): i.fa.fa-shopping-cart  Beli
+                  //dirubah kembali kalau cart nya udah beres
+                  //if(session.nama)
+                  //    p: a.btn.btn-primary(data-toggle='modal', data-target='.modal-beli'): i.fa.fa-shopping-cart  Beli
+                  //else
+                  //    p
+                  //        a.btn.btn-primary(disabled=true): i.fa.fa-shopping-cart  Beli
+                  //        &nbsp
+                  //        a.btn.btn-primary(href='#') Daftar Terlebih Dahulu
+                  | <a href='/produk/jadikanwishlist/#{toko.Produk[0].id}' class='btn btn-primary'>Tambahkan ke wishlist</a> <br/><br/>
+                  | <p>Terjual : #{jumlah_terjual} </p>
+                  | <p>Berat : #{toko.Produk[0].berat} gr </p>
+                  if (toko.Produk[0].kondisi == 1)
+                      | <p>Kondisi : Baru </p>
+                  else
+                      | <p>Kondisi : Bekas </p>
+                  | <p>Stok : #{toko.Produk[0].stok} </p>
+                script.
+                  document.getElementById("uang").innerHTML = numberFormat("#{toko.Produk[0].harga}",".");
+        .col-sm-3(style='margin : 0 30px')
+             h3 Informasi toko
+             table
+                tr: td(rowspan='4',width='110px')
+                    a(href='/toko/profil/#{toko.id}'): img(src='/images/#{toko.logo}', width='100px')
+                tr: td: a(href='/toko/profil/#{toko.id}') #{toko.nama}
+                tr: td #{toko.Kabupaten.nama}
+                tr: td: a.btn-primary.btn(href='/produk/favorit/#{toko.id}') Jadikan Favorit
+
+    br
+    .row
+        .col-sm-1
+        .category-tab
+              // category-tab
+              .col-sm-8
+                  ul.nav.nav-tabs
+                      li: a(href='#deskripsi' data-toggle='tab') Deskripsi Produk
+                      li: a(href='#review' data-toggle='tab') Review
+                      li: a(href='#diskusi' data-toggle='tab') Diskusi Produk
+                  .tab-content
+                      #deskripsi.tab-pane.fade.active.in
+                          .col-sm-3
+                              p #{toko.Produk[0].deskripsi}
+                      #review.tab-pane.fade
+                          .col-sm-3
+                              p review produk
+                      #diskusi.tab-pane.fade
+                          .col-sm-3
+                              p diskusi produk
+    br
+    br

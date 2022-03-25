@@ -1,0 +1,18 @@
+//
+   Created by riansyahPC on 11/27/2015.
+
+extends profilToko
+append produkMilikEtalase
+   h3#etalase #{namaEtalase}
+   br
+   br
+   each value,indexProduk in toko.Produk
+      div(style='width:160px;height:270px;float:left')
+         | <a href='/produk/detail/#{value.id}'>
+         | <img src='/images/produk/#{value.gambar}', style='height: 150px;width:140px'/> <br/> </a>
+         | <h4> Rp <span class='uang'> </h4>
+         | <a href='/produk/detail/#{value.id}'> #{value.nama} </a><br/>
+      script.
+         document.getElementsByClassName("uang")[#{indexProduk}].innerHTML = numberFormat("#{value.harga}", ".");
+
+

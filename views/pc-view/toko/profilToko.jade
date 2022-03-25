@@ -1,0 +1,50 @@
+//
+   Created by riansyahPC on 11/27/2015.
+
+extends ../layoutBelanja
+append content
+      .col-sm-1
+      .row
+         .col-sm-1(style="float:left;padding-right:220px "): img(src='/images/#{toko.logo}')
+         .col-sm-7(style="float:left")
+            .row(style="margin-top : 27px")
+               h2 #{toko.nama}
+               p #{toko.deskripsi}
+            .row
+               .col-sm-5
+               .col-sm-7
+                  center
+                     h4 informasi toko
+                     .col-sm-4 <h4>#{toko.Kabupaten.nama}</h4> lokasi
+                     .col-sm-4 <h4> #{produkTerjual} </h4> produk terjual
+                     .col-sm-4 <h4>#{jumlahTransaksiBerhasil}</h4> transaksi berhasil
+      .row <br/>
+         .features_items
+            script.
+               function numberFormat(_number, _sep) {
+                  _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                  _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                  if (typeof _sep != "undefined" && _sep != " ") {
+                     _number = _number.replace(/\s/g, _sep);
+                  }
+                  return _number;
+               }
+            // features_items
+            h2.title.text-center Produk Milik Toko #{toko.nama}
+            .col-sm-1
+               style.
+                  .nav-list li {
+                     border-bottom: solid lightgray 0.5px
+                  }
+            .col-sm-2(style='width:250px')
+               .left-sidebar(style='box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0);')
+                  #accordian.panel-group.category-products
+                     .panel-default
+                        ul.nav.nav-list
+                           li.nav-header: h4 Etalase
+                           li: a(href='/toko/profil/#{toko.id}#etalase') Semua Etalase
+                           //- hanya menampilkan etalase yang memiliki produk
+                           each val,index in etalase.rows
+                              li: a(href='/toko/profil/#{toko.id}/#{val.Etalase.id}#etalase') #{val.Etalase.nama} (#{(etalase.count[index].count) ? etalase.count[index].count : 1})</b><br/>
+            .col-sm-7
+               block produkMilikEtalase

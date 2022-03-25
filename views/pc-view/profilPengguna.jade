@@ -1,0 +1,116 @@
+// Created by riansyahPC on 11/27/2015.
+extends layoutBelanja
+append content
+        script.
+            $(document).ready(function () {
+                var ubahSandiBtn = document.getElementById('ubahSandiBtn');
+                var konfirmasiSandi = document.getElementById('konfirmasiSandi');
+                var sandi = document.getElementById('sandi');
+                var peringatanSandi = document.getElementById('peringatanSandi');                
+                konfirmasiSandi.addEventListener("keyup", function () {
+                    if (konfirmasiSandi.value != sandi.value) {
+                        peringatanSandi.innerHTML = 'isi konfirmasi sandi sesuai dengan sandi'
+                        ubahSandiBtn.disabled = true;
+                    } else {
+                        peringatanSandi.innerHTML = ''
+                        ubahSandiBtn.disabled = false;
+                    }
+                });
+
+
+            });
+        .col-sm-1
+        .col-sm-9
+            .modal.fade(class='modal-pengubahan-sandi' tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+                .modal-dialog
+                    .modal-content
+                        .modal-header
+                            h4 Pengubahan sandi
+                        .modal-body(style='padding: 40px')
+                            form(method='post' action='/pengguna/gantisandi/')
+                                table(width='520px')
+                                    tr: td(width='20%') Sandi Lama
+                                        td(colspan=4): input#sandiLama.form-control(required=true type='password' name='sandiLama')
+                                        small(style='color : red')#peringatanSandiLama
+                                    tr: td Sandi
+                                        td(colspan=4): input#sandi.form-control(required=true type='password' name='sandi')
+                                    tr: td Konfirmasi Sandi
+                                        td(colspan=4)
+                                            input#konfirmasiSandi.form-control(required=true type='password' )
+                                            small(style='color : red')#peringatanSandi
+
+                                center: input#ubahSandiBtn.btn.btn-primary(type='submit' value='Ubah Sandi' )
+            .modal.fade(class='modal-pengubahan-profil' tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+                .modal-dialog
+                    .modal-content
+                        .modal-header
+                            h4 Pengubahan profil
+                        .modal-body(style='padding: 40px')
+                            form(method='post',action='/pengguna/postgantiprofil/' enctype='multipart/form-data')
+                                table(width='520px')
+                                    tr: td Nama
+                                        td: input.form-control(type='text' name='nama' value=pengguna.nama)
+                                    tr: td Jenis Kelamin
+                                        td(height=70)
+                                            select#jenisKelaminInput.form-control(required=true name='jenis_kelamin')
+                                                option(value='0') Laki-laki
+                                                option(value='1') Perempuan
+                                    tr: td Foto diri
+                                        td
+                                            //TODO: saat upload ganti toko berhasil , ganti src gambar lewat jquery dibawah
+                                            img(src='/images/pengguna/#{pengguna.foto}' width='100px')
+                                            br
+                                            span.btn.btn-default.btn-file
+                                                | Ganti Foto
+                                                input#fieldPhotoPengguna.form-control(type='file', name='photo', accept='image/*', data-url='/upload-gambar-pengguna')
+                                                input#photoNamePengguna(type='hidden' name='foto')
+                                            #fileUploadsPengguna
+                                    script(src='/vendor/jquery-file-upload/js/vendor/jquery.ui.widget.js')
+                                    script(src='/vendor/jquery-file-upload/js/jquery.iframe-transport.js')
+                                    script(src='/vendor/jquery-file-upload/js/jquery.fileupload.js')
+                                    script.
+                                        $(document).ready(function () {
+                                            //cara kerja library ini memungkinkan photo telah diupload sebelum form disubmit
+                                            $('#fieldPhotoPengguna').fileupload({
+                                                dataType: 'json',
+                                                done: function (e, data) {
+                                                    $.each(data.result.files, function (index, file) {
+                                                        $('#fileUploadsPengguna').append($('<div class="upload">' +
+                                                                '<span class="glyphicon glyphicon-ok"></span>&nbsp;' +
+                                                                file.originalName + '</div>'));
+                                                        $('#photoNamePengguna').val(file.originalName);
+                                                    });
+                                                }
+                                            });
+                                        });
+                                center: input.btn.btn-primary(type='submit' value='Ubah Profil' )
+            .row <br>
+                .col-sm-3: img(src='/images/pengguna/#{pengguna.foto}' width='170px' height='200px')
+                .col-sm-9
+                    table.table
+                        if(session.penggunaId == pengguna.id)
+                            //todo: menggunakan modal pengubahan
+                            tr: td
+                                    a.btn.btn-danger(data-toggle='modal' data-target='.modal-pengubahan-profil') ubah profil
+                                    &nbsp;
+                                    a.btn.btn-danger(data-toggle='modal' data-target='.modal-pengubahan-sandi') ubah sandi
+                        tr: td: b #{pengguna.nama}
+                        tr: td  Email : #{pengguna.email}
+                        tr: td  Jenis Kelamin : #{(pengguna.jenis_kelamin == 0) ? 'Laki-laki ' : 'Perempuan'}
+            .row
+                    h4 informasi toko
+                    .row
+                        .col-sm-1(style="float:left;padding-right:220px "): img(src='/images/#{pengguna.Toko.logo}')
+                        .col-sm-7(style="float:left")
+                            .row
+                                h2 #{pengguna.Toko.nama}
+                                p #{pengguna.Toko.deskripsi}
+                            .row
+                                .col-sm-4
+
+                                .col-sm-7
+                                    center
+                                        .col-sm-4 <h4>#{pengguna.Toko.Kabupaten.nama}</h4> lokasi
+                                        .col-sm-4 <h4> #{produkTerjual} </h4> produk terjual
+                                        .col-sm-4 <h4>#{jumlahTransaksiBerhasil}  </h4> transaksi berhasil
+

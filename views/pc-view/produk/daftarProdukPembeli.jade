@@ -1,0 +1,59 @@
+extends ../layoutBelanja  
+  
+append content
+  .well.col-sm-9(style='margin : 10px 100px')
+    h2 #{kategori_produk.kategori}
+    p(style='text-align : justify') #{kategori_produk.deskripsi}
+  hr
+  .col-sm-9(style='margin : 10px 100px')
+    script.
+          $(document).ready(function () {
+              $("#pilihanUrut").change(function () {
+                  $.ajax({
+                      type: 'GET',
+                      url: '/produk/urut/' +#{kategori_produk.id}+'/'+$('#pilihanUrut option:selected').val(),
+                      success: function (result) {
+                          $('#daftarProduk').empty();
+                          console.log(result.produkHTML);
+                          document.getElementById('daftarProduk').innerHTML = result.produkHTML
+                      }
+                  })
+              });
+          });
+    // todo: perkembangan kedepan
+    //.col-sm-3.pull-right
+    //  select#pilihanLokasi(name='pilihanLokasi').form-control
+    //    option(value='barokah')  Pilih Lokasi
+    //    option(value='barokah')  Kendari
+    //    option(value='barokah')  Cianjur
+    .col-sm-3.pull-right
+      select#pilihanUrut(name='pilihanUrut' ).form-control
+        option  Urut Berdasar
+        option(value='1')  Termurah
+        option(value='2')  Termahal
+    br
+    hr
+    br
+    script.
+            function numberFormat(_number, _sep) {
+                _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                _number = _number.replace(new RegExp("^(\\d{" + (_number.length%3? _number.length%3:0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                if(typeof _sep != "undefined" && _sep != " ") {
+                    _number = _number.replace(/\s/g, _sep);
+                }
+                return _number;
+            }
+
+    #daftarProduk
+        if(daftar_produk.length == 0)
+            .alert.alert-danger: center: h4 Tidak ada produk yang terdaftar
+        else
+          each value,n in daftar_produk
+            div(style='width:160px;height:270px;float:left')
+                |<a href='/produk/detail/#{value.id}' >
+                | <img src='/images/produk/#{value.gambar}', id='detailProduk#{n}', style='height: 150px;width:140px'/> <br/> </a>
+                | <h4> Rp <span class='uang'> </h4>
+                | <a href='/produk/detail/#{value.id}'> #{value.nama} </a><br/>
+                | <i class='fa fa-flag'></i>  #{value.Toko.Kabupaten.nama} <br/><a href='/toko/profil/#{value.Toko.id}'> #{value.Toko.nama} </a>
+                script.
+                    document.getElementsByClassName("uang")[#{n}].innerHTML = numberFormat("#{value.harga}",".");

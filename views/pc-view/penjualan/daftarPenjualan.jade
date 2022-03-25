@@ -1,0 +1,112 @@
+extends tabPenjualan
+append contentDalam
+          script.
+            function numberFormat(_number, _sep) {
+                _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                    if (typeof _sep != "undefined" && _sep != " ") {
+                        _number = _number.replace(/\s/g, _sep);
+                    }
+                    return _number;
+            }
+          if (Invoice.length == 0)
+            .alert.alert-danger
+                center: h4: b Tidak ada daftar pemesanan
+          else
+                each inv,indexInv in Invoice
+                  .row.alert.alert-info(style='width:683px; margin : 0 0px;padding:5px')
+                      table( width='650px')
+                          tr
+                              td(height='60px' width='10%' ): img(src='/images/toko/logo-toko.png' width='70px' style="margin-top:-10px")
+                              td(width='21%') Pembelian oleh : <br>
+                                  a(href='/pengguna/profil/#{inv.pembeliId}')  #{inv.Pengguna.nama}
+                              td(rowspan='3')
+                                  b #{inv.kode} <br/>
+                                  p Tanggal transaksi : <b> #{moment(inv.tanggal).format('YYYY-MM-DD')} </b>
+                                    | Total : <b>Rp <span id='totalTagihan#{indexInv}'></span> </b>
+                                    br
+                                    i.fa.fa-question-circle(style="cursor: pointer" title="Pesanan Anda akan otomatis dibatalkan apabila penjual tidak merespon dalam waktu yang ditentukan.")
+                                    //todo: dihitung
+                                    small  batal otomatis :
+                                        span(style="background-color:blue;color : white;padding:2px") #{moment(inv.jatuh_tempo).format('YYYY-MM-DD')}
+                                  script.
+                                      document.getElementById("totalTagihan#{indexInv}").innerHTML = numberFormat("#{inv.total_harga}", ".");
+
+                                  .alert.alert-warning(style="padding:5px;margin: 10px")
+                                      small #{moment(inv.Statuses[(inv.Statuses.length-1)].waktu).format('YYYY-MM-DD, hh:mm')} - #{inv.Statuses[(inv.Statuses.length-1)].pesan}
+                                      //todo: nomor resi di generate
+                                      br
+                                      small Nomor Resi  : #{inv.no_resi}
+                                  .span.pull-right
+                                        button.btn-primary(data-toggle='collapse' data-target='.rincianPemesanan#{indexInv}')
+                                            i.fa.fa-arrow-circle-down  Detail Transaksi
+
+                          tr: td
+                              td
+                  br
+                  .row(class='rincianPemesanan#{indexInv}' style='margin: -17px 10px 10px 0;').collapse
+                        table(style='border: solid 1px lightgrey', border='1', width='680px')
+                            tr
+                                td(colspan='2')
+                                    b  Alamat Tujuan<br/>
+                                    b  #{inv.Penerima.nama} <br/>
+                                    | #{inv.Penerima.alamat} <br/>
+                                    | #{inv.Penerima.kecamatan} - #{inv.Penerima.Kabupaten.nama}, #{inv.Penerima.Kabupaten.kode_pos} <br/>
+                                    | #{inv.Penerima.Provinsi.nama}<br/>
+                                    | Telp: #{inv.Penerima.telepon}
+                                td
+                                    b Total Berat
+                                    p <span id='berat#{indexInv}'></span> kg
+                                    script.
+                                        document.getElementById("berat#{indexInv}").innerHTML = numberFormat("" + (#{inv.total_berat}/1000), ".");
+                                td
+                                    b Ongkos Kirim
+                                    p Rp <span id='ongkir#{indexInv}'></span>
+                                    script.
+                                        document.getElementById("ongkir#{indexInv}").innerHTML = numberFormat(""+#{inv.ongkos_kirim}, ".");
+                            tr: td(colspan='4'): h5: i.fa.fa-list  Daftar Produk
+                            - each produk,indexProduk in inv.Produks
+                                tr
+                                    td(height='35px', colspan='2')
+                                        span.pull-left(style='padding : 0 10px 0 10px')
+                                            img(src='/images/produk/#{produk.gambar}' width='30px')
+                                        span.pull-left
+                                            b=produk.nama
+                                            br
+                                            b(style='font-size : 8pt')  #{produk.Invoice_Produk.jumlah_produk} Barang
+                                                | (<span id='beratProduk#{indexInv}#{indexProduk}'></span> kg) x
+                                                | Rp <span id='hargaProduk#{indexInv}#{indexProduk}'></span>
+                                            script.
+                                                document.getElementById("beratProduk#{indexInv}#{indexProduk}").innerHTML = (#{produk.berat}/1000);
+                                                document.getElementById("hargaProduk#{indexInv}#{indexProduk}").innerHTML = numberFormat("" + #{produk.harga}, ".");
+                                    td(height='70px'): b Keterangan
+                                        p -
+                                    td
+                                        b  Total Harga <br>
+                                        | Rp <span id='totalHargaProduk#{indexInv}#{indexProduk}'></span>
+                                        script.
+                                            var totalHarga = #{produk.harga} * #{produk.Invoice_Produk.jumlah_produk};
+                                            document.getElementById("totalHargaProduk#{indexInv}#{indexProduk}").innerHTML = numberFormat("" +totalHarga, ".");
+
+                            tr: td(colspan='4' height='40px')
+                                span(style="padding-right : 10px;font-size : 13pt").pull-right
+                                    | Total Pembayaran <b> Rp <span id='totalPembayaran#{indexInv}'></span> </b>
+                              script.
+                                  document.getElementById("totalPembayaran#{indexInv}").innerHTML = numberFormat(""+#{inv.total_harga}, ".");
+
+                            - each status,indexStatus in inv.Statuses
+                                tr: td(colspan='4' height='40px')
+                                    span.pull-left(style='padding : 0 10px 0 10px')
+                                        -var warna ='';
+                                        if(status.pelaku=='Buyer')
+                                            - warna = 'orange';
+                                        else if(status.pelaku=='Pasarmantap')
+                                            - warna = 'grey';
+                                        else if(status.pelaku=='Seller')
+                                            - warna = 'green';
+                                        span(style="background-color:#{warna};color : white;padding:2px;width:140px").pull-right: b.pull-right #{status.pelaku}
+                                        br
+                                        b: i.fa.fa-clock-o  #{moment(status.Invoice_Status.waktu).format('YYYY-MM-DD hh:mm')}
+                                    span
+                                        p=status.pesan
+

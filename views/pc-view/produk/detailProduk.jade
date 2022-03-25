@@ -1,0 +1,75 @@
+extends ../layoutBelanja
+append content
+
+    script(type='text/javascript').
+        function numberFormat(_number, _sep) {
+            _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+            _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+            if (typeof _sep != "undefined" && _sep != " ") {
+                _number = _number.replace(/\s/g, _sep);
+            }
+            return _number;
+        }
+    .row(style='margin : 30px 10px')
+        .col-sm-4
+            table
+                tr: td(colspan='4') <img src='/images/produk/#{produk.gambar}' width='250'>
+        .col-sm-4
+            p <a href='/produk/daftarbykategori/#{produk.Kategori_Produk.id}'>#{produk.Kategori_Produk.kategori} </a>
+                | > <a href='/produk/detail/#{produk.id}'> #{produk.nama}</a>
+            table
+              tr
+                td: h1=produk.nama
+                  | <h2> Rp <span id='uang'> </span></h2>
+                  if(session.nama)
+                      if(session.tokoId == produk.Toko.id)
+                        p: small(style='color : red') *tidak bisa dibeli, produk toko sendiri
+                      else  
+                        p: a.btn.btn-primary(href='/produk/beli/#{produk.id}')#btnBeliProduk: i.fa.fa-shopping-cart  Beli
+                        if(statusWishlist != 'sudahWishlist')
+                          a(href='/produk/jadikanwishlist/#{produk.id}').btn.btn-primary Tambahkan ke wishlist
+                  else
+                      p
+                          a.btn.btn-primary(disabled=true): i.fa.fa-shopping-cart  Beli
+                          &nbsp
+                          a.btn.btn-primary(href='/pengguna/registrasi') Daftar Terlebih Dahulu
+                      a(disabled=true).btn.btn-primary Tambahkan ke wishlist
+                  | <br/><br/>
+                  | <p>Terjual : #{jumlah_terjual} buah</p>
+                  | <p>Berat : #{produk.berat} gr </p>
+                  if (produk.kondisi == 1)
+                      | <p>Kondisi : Baru </p>
+                  else
+                      | <p>Kondisi : Bekas </p>
+                script.
+                  document.getElementById("uang").innerHTML = numberFormat("#{produk.harga}",".");
+        .col-sm-3(style='margin : 0 30px')
+             h3 Informasi toko
+             table
+                tr: td(rowspan='3',width='110px')
+                    a(href='/toko/profil/#{produk.Toko.id}'): img(src='/images/#{produk.Toko.logo}', width='100px')
+                tr: td
+                     a(href='/toko/profil/#{produk.Toko.id}') #{produk.Toko.nama}
+                     small <br> Daerah Asal <br>
+                     | #{produk.Toko.Kabupaten.nama}
+    br
+    .row(style='margin : 0px 10px')
+        .category-tab
+              // category-tab
+              .col-sm-8
+                  ul.nav.nav-tabs
+                      li: a(href='#deskripsi' data-toggle='tab') Deskripsi Produk
+                      //li: a(href='#review' data-toggle='tab') Review
+                      //li: a(href='#diskusi' data-toggle='tab') Diskusi Produk
+                  .tab-content
+                      #deskripsi.tab-pane.fade.active.in
+                          div
+                              p #{produk.deskripsi}
+                      #review.tab-pane.fade
+                          .col-sm-3
+                              p review produk
+                      #diskusi.tab-pane.fade
+                          .col-sm-3
+                              p diskusi produk
+    br
+    br

@@ -1,0 +1,104 @@
+extends layoutBelanja
+append content
+    .row
+        .col-sm-1
+        .col-sm-8
+            h4 Registrasi Pengguna Baru
+                //TODO: buat penanganan url /pengaturantoko/update
+
+            form(method='post', action='/pengguna/registrasi/post' enctype='multipart/form-data')
+                    //untuk tes registrasi
+                    table.table
+                        tr: td(width='20%') Email
+                            td(colspan=4): input.form-control(required=true type='email' name='email')
+                        tr: td Sandi
+                            td(colspan=4): input#sandi.form-control(required=true type='password' name='sandi')
+                        tr: td Konfirmasi Sandi
+                            td(colspan=4)
+                                input#konfirmasiSandi.form-control(required=true type='password' )
+                                small(style='color : red')#peringatanSandi
+                            script.
+                                var konfirmasiSandi = document.getElementById('konfirmasiSandi');
+                                var sandi = document.getElementById('sandi');
+                                var peringatanSandi = document.getElementById('peringatanSandi');
+                                konfirmasiSandi.addEventListener("keyup", function(){
+                                    if(konfirmasiSandi.value != sandi.value) {
+                                        peringatanSandi.innerHTML = 'isi konfirmasi sandi sesuai dengan sandi'
+                                    }else{
+                                        peringatanSandi.innerHTML = ''
+                                    }
+                                });
+                        tr: td Nama
+                            td(colspan=4): input.form-control(required=true type='text' name='nama')
+                        tr: td Jenis Kelamin
+                            td(height=70)
+                                select#jenisKelaminInput.form-control(required=true name='jenis_kelamin')
+                                    option(value='0') Laki-laki
+                                    option(value='1') Perempuan
+                        tr: td Foto diri
+                            td(colspan=4)
+                                //TODO: saat upload ganti toko berhasil , ganti src gambar lewat jquery dibawah
+                                img(src='/images/pengguna/default-user-photo.png' width='100px')
+                                br
+                                span.btn.btn-default.btn-file
+                                    | Ganti Foto
+                                    input#fieldPhotoPengguna.form-control(type='file', name='photo', accept='image/*', data-url='/upload-gambar-pengguna')
+                                    input#photoNamePengguna(type='hidden' name='foto')
+                                #fileUploadsPengguna
+                        tr: td(colspan='4' align='center'): input#simpan.btn.btn-primary(type='submit',value='simpan')
+                    //- table.table
+                    //-     tr: td(width='20%') Email
+                    //-         td(colspan=4): input.form-control(value='biji@gmail' required=true type='email' name='email')
+                    //-     tr: td Sandi
+                    //-         td(colspan=4): input#sandi.form-control(value='biji' required=true type='password' name='sandi')
+                    //-     tr: td Konfirmasi Sandi
+                    //-         td(colspan=4)
+                    //-             input#konfirmasiSandi.form-control(value='biji' required=true type='password' )
+                    //-             small(style='color : red')#peringatanSandi
+                    //-         script.
+                    //-             var konfirmasiSandi = document.getElementById('konfirmasiSandi');
+                    //-             var sandi = document.getElementById('sandi');
+                    //-             var peringatanSandi = document.getElementById('peringatanSandi');
+                    //-             konfirmasiSandi.addEventListener("keyup", function(){
+                    //-                 if(konfirmasiSandi.value != sandi.value) {
+                    //-                     peringatanSandi.innerHTML = 'isi konfirmasi sandi sesuai dengan sandi'
+                    //-                 }else{
+                    //-                     peringatanSandi.innerHTML = ''
+                    //-                 }
+                    //-             });
+                    //-     tr: td Nama
+                    //-         td(colspan=4): input.form-control(value='rians' required=true type='text' name='nama')
+                    //-     tr: td Jenis Kelamin
+                    //-         td(height=70)
+                    //-             select#jenisKelaminInput.form-control(required=true name='jenis_kelamin')
+                    //-                 option(value='0') Laki-laki
+                    //-                 option(value='1') Perempuan
+                    //-     tr: td Foto diri
+                    //-         td(colspan=4)
+                    //-             //TODO: saat upload ganti toko berhasil , ganti src gambar lewat jquery dibawah
+                    //-             img(src='/images/pengguna/default-user-photo.png' width='100px')
+                    //-             br
+                    //-             span.btn.btn-default.btn-file
+                    //-                 | Ganti Foto
+                    //-                 input#fieldPhotoPengguna.form-control(type='file', name='photo', accept='image/*', data-url='/upload-gambar-pengguna')
+                    //-                 input#photoNamePengguna(type='hidden' name='foto')
+                    //-             #fileUploadsPengguna
+                    //-     tr: td(colspan='4' align='center'): input#simpan.btn.btn-primary(type='submit',value='simpan')
+            script(src='/vendor/jquery-file-upload/js/vendor/jquery.ui.widget.js')
+            script(src='/vendor/jquery-file-upload/js/jquery.iframe-transport.js')
+            script(src='/vendor/jquery-file-upload/js/jquery.fileupload.js')
+            script.
+                $(document).ready(function () {
+                    //cara kerja library ini memungkinkan photo telah diupload sebelum form disubmit
+                    $('#fieldPhotoPengguna').fileupload({
+                        dataType: 'json',
+                        done: function (e, data) {
+                            $.each(data.result.files, function (index, file) {
+                                $('#fileUploadsPengguna').append($('<div class="upload">' +
+                                        '<span class="glyphicon glyphicon-ok"></span>&nbsp;' +
+                                        file.originalName + '</div>'));
+                                $('#photoNamePengguna').val(file.originalName);
+                            });
+                        }
+                    });
+                });
