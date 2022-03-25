@@ -1,0 +1,46 @@
+//daftar produk penjual
+extends ../layout
+append content
+    script(src='/javascripts/datatables.min.js')
+    script.
+        $(document).ready(function () {
+            $('#dataTables-example').dataTable();
+        });
+    h3 Daftar Produk
+    .row
+        script.
+            function numberFormat(_number, _sep) {
+                _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                if (typeof _sep != "undefined" && _sep != " ") {
+                    _number = _number.replace(/\s/g, _sep);
+                }
+                return _number;
+            }
+        
+        .table.table-responsive
+            table(style="margin:0 10px ;width : 740px").table.table-striped.table-bordered.table-hover#dataTables-example
+                thead.panel.panel-primary
+                    tr.panel.panel-primary
+                        th Gambar
+                        th Produk
+                        th Etalase
+                        th Harga
+                        th Aksi
+                tbody
+                    each value,indexProduk in daftar_produk
+                        tr(style='height : 20px')
+                            //td(width='3%') <input type='checkbox'/>
+                            td(width='10%') <img src='/images/produk/#{value.gambar}' width='60px' height='60px' alt=''/>
+                            if(value.kondisi == '0')
+                                td(width='30%') #{value.nama} - bekas <br/>#{value.Kategori_Produk.kategori}
+                            else
+                                td(width='30%') #{value.nama} - baru <br/>#{value.Kategori_Produk.kategori}
+                            td(width='23%')  #{value.Etalase.nama}
+                            td(width='20%') Rp <span class='uang'> </span>                            
+                            td: u <a href='/produk/ubah/#{value.id}'> ubah</a> 
+                                | <p><a href='/produk/hapus/#{value.id}'> hapus</a></p>
+                                script.
+                                    document.getElementsByClassName("uang")[#{indexProduk}].innerHTML = numberFormat("#{value.harga}", ".");
+
+        

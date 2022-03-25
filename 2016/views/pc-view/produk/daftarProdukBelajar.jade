@@ -1,0 +1,63 @@
+extends ../layout
+
+append content
+    h3 Daftar Produk
+    .row
+        .col-sm-3
+            select.form-control(name='pilihan')
+                option  Semua Kategori
+                each val in kategori_produk
+                    option(value='#{val.Kategori_Produk.id}')  #{val.Kategori_Produk.kategori}
+        .col-sm-3
+            select.form-control(name='pilihan')
+                option  Semua Etalase
+                each val in etalase
+                    option(value='#{val.id}')  #{val.nama}
+    .row
+        script.
+            function numberFormat(_number, _sep) {
+                _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                if (typeof _sep != "undefined" && _sep != " ") {
+                    _number = _number.replace(/\s/g, _sep);
+                }
+                return _number;
+            }
+        script(src='/javascripts/jquery.bootpag.js')
+        //todo: cara tampilkan 6 tiap paging
+        table.table-bordered.table-hover(width='680px',style='margin : 15px')#content
+            each value,indexProduk in daftar_produk
+                tr(style='height : 100px')
+                    //td(width='3%') <input type='checkbox'/>
+                    td(width='10%') <img src='/images/produk/#{value.gambar}' width='70px' height='70px' alt=''/>
+                    if(value.kondisi == '0')
+                        td(width='30%') #{value.nama} - bekas <br/>#{value.Kategori_Produk.kategori}
+                    else
+                        td(width='30%') #{value.nama} - baru <br/>#{value.Kategori_Produk.kategori}
+                    //td(width='23%') <b> Etalase </b><br> #{value.Etalase.nama}
+                    td(width='23%') <b> Etalase </b><br> Macbook
+                    td(width='20%') Rp <span class='uang'> </span>
+                    //td <a href='/produk/ubah/buku/#{value.id}'> ubah</a> <p><a href='/produk/hapus/#{value.id}'> salin</a></p><p><a href='#'> hapus</a></p>
+                    td <a href='/produk/ubah/buku/#{value.id}'> ubah</a> <p><a href='#'> hapus</a></p>
+                        script.
+                            document.getElementsByClassName("uang")[#{indexProduk}].innerHTML = numberFormat("#{value.harga}", ".");
+        p#pagination-here
+        script.
+            $('#pagination-here').bootpag({
+                total: 7,          // total pages
+                page: 1,            // default page
+                maxVisible: 5,     // visible pagination
+                leaps: true         // next/prev leaps through maxVisible
+            }).on("page", function (event, num) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/produk/daftar/' + (num==1 ? 0 : num+(num*2)),//0,1+(2),2+(4),318,12 ,seharusnya 0,4+1=5,9+1=10,14+1=15,19+1=20 , jadi harus increment 4,9,14,19..+5,+6,+5
+                    success: function (result) {
+                        $("#content").html("<tr>" +result.produkHTML+"</tr>");
+                    }
+                })
+                //$("#content").html("from " + (num)+" to "+ (num+4) ); // or some ajax content loading...
+
+                // ... after content load -> change total to 10
+                //$(this).bootpag({total: 10, maxVisible: 10});
+            });

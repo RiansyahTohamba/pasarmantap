@@ -1,0 +1,54 @@
+extends tabPenjualan
+
+append contentDalam
+      if(Invoice.length == 0)
+          .alert.alert-danger
+              center: h4: b Tidak ada daftar pemesanan
+      else
+          script(type='text/javascript').
+              function numberFormat(_number, _sep) {
+                  _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                  _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                  if (typeof _sep != "undefined" && _sep != " ") {
+                      _number = _number.replace(/\s/g, _sep);
+                  }
+                  return _number;
+              }
+          table( width='680px' border='1' style="border: solid 1px lightgrey")
+              tr
+                  th(width='10%') Pembelian oleh
+                  th(width='20%') Pengiriman
+                  th(width='15%') Kurir POS
+                  th(width='5%') Aksi
+                each inv,indexInv in Invoice
+                    .modal.fade(class='modal-detail#{index}#{indexInv}' tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+                            .modal-dialog.modal-sm
+                                .modal-content
+                                    .modal-body(style='padding: 40px')
+                                        p='??'
+                    tr
+                        form(method='post' action='/penjualan/konfirmasipengiriman/update')
+                            td
+                                b=inv.Pengguna.nama
+                                input(type='hidden' name='invoiceId' value=inv.id)
+                                p=inv.kode
+                                p: i.fa.fa-question-circle(style="cursor: pointer"
+                                    title="Pesanan Anda akan otomatis dibatalkan " +
+                                    "apabila penjual tidak merespon dalam waktu " +
+                                    "yang ditentukan."): b='jatuh tempo : ' +moment(inv.jatuh_tempo).format('YYYY-MM-DD') 
+                            td
+                                p: small='a/n '+inv.Penerima.nama
+                                    | <br/> #{inv.Penerima.alamat} <br/>
+                                    | #{inv.Penerima.kecamatan} - #{inv.Penerima.Kabupaten.nama}, #{inv.Penerima.Provinsi.nama}
+                                //- p: i.fa.fa-eye: a(href='#' data-toggle='modal' data-target='.modal-detail#{index}#{indexInv}')  detail transaksi
+                            td
+                                p: small: b jasa pengiriman - Reguler
+                                p: input#noresi.form-control.input-sm(name='noresi' type='number' placeholder='masukkan no resi' required=true)
+                                p: small: b
+                                    | ongkos kirim Rp <span id='ongkosKirim#{indexInv}'></span>
+                                script.
+                                  document.getElementById("ongkosKirim#{indexInv}").innerHTML = numberFormat("#{inv.ongkos_kirim}", ".");    
+                            td
+                                input(type='hidden' value='#{inv.id}')
+                                p: input.btn.btn-primary(type='submit' value='konfirmasi' required=true)
+                                p: a.btn.btn-danger(href='/penjualan/konfirmasipengiriman/batal/#{inv.id}') batal

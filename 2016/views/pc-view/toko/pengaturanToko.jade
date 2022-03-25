@@ -1,0 +1,134 @@
+extends ../layout  
+  
+append content
+    script.
+          $(document).ready(function () {
+             $("#provinsi").change(function () {
+                $.ajax({
+                   type: 'GET',
+                   url: '/getkabupaten/' + $('#provinsi option:selected').val(),
+                   success: function (result) {
+                      $('#kabupaten').empty();
+                      $('#kabupaten').append(result.listArr)
+                   }
+                })
+             });
+          });
+    .row(style='width:700px')
+        h3 Pengaturan Toko
+        br
+        h4 Informasi Toko
+        .modal.fade(class='modal-ubah' tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        h4 Pengubahan Toko
+                    .modal-body(style='padding: 40px')
+                        form(method='post', action='/toko/update',enctype='multipart/form-data')
+                            table.table
+                                tr: td(width='20%') Nama Toko
+                                    td(colspan=3): input.form-control(type='text'  value='#{toko.nama}' name='nama')
+                                tr: td Deskripsi
+                                    td(colspan=3): input.form-control(type='text' value='#{toko.deskripsi}' name='deskripsi')
+                                tr: td Lokasi
+                                    td(height=70) <b> Provinsi </b><br>
+                                        select#provinsi.form-control(required=true,name='provinsiId')
+                                           each val in listProvinsi
+                                              if(toko.Provinsi.nama == val.nama)  
+                                                  option(value='#{val.id}' selected) #{val.nama}
+                                              else
+                                                  option(value='#{val.id}') #{val.nama}    
+                                    td <b> Kotamadya/Kabupaten </b>
+                                        select#kabupaten.form-control(required=true,name='kabupatenId')
+                                           each val in listKabupaten  
+                                              if(toko.Kabupaten.nama == val.nama)  
+                                                  option(value='#{val.id}' selected) #{val.nama}
+                                              else
+                                                  option(value='#{val.id}') #{val.nama}
+
+                                    td <b> Kecamatan </b>
+                                        input.form-control(type='text'  value='#{toko.kecamatan}')
+                                tr: td Logo Toko
+                                    td(colspan=3)
+                                        img(src='/images/toko/#{toko.logo}' width='100px')
+                                        br
+                                        span.btn.btn-default.btn-file
+                                            | Ganti Logo Toko
+                                            input#fieldPhoto.form-control(type='file', name='photo', accept='image/*', data-url='/upload-gambar-toko')
+                                            input#photoName(type='hidden', name='logo' )
+                                        #fileUploads
+                                tr: td(colspan='3' align='center'): input.btn.btn-primary(type='submit',value='simpan perubahan toko')
+
+        table.table
+            tr: td(width='20%') Nama Toko
+                td=toko.nama 
+            tr: td Deskripsi
+                td=toko.deskripsi
+            tr: td Lokasi
+                td=toko.Provinsi.nama+' - '+toko.Kabupaten.nama+' - '+toko.kecamatan
+            tr: td Logo Toko
+                td: img(src='/images/toko/#{toko.logo}' width='100px')
+
+            tr: td(colspan='2' align='center'): a.btn.btn-primary(data-toggle='modal' data-target='.modal-ubah') ubah informasi toko
+
+    script(src='/vendor/jquery-file-upload/js/vendor/jquery.ui.widget.js')
+    script(src='/vendor/jquery-file-upload/js/jquery.iframe-transport.js')
+    script(src='/vendor/jquery-file-upload/js/jquery.fileupload.js')
+    script.
+        $(document).ready(function () {
+            //cara kerja library ini memungkinkan photo telah diupload sebelum form disubmit
+            $('#fieldPhoto').fileupload({
+                dataType: 'json',
+                done: function (e, data) {
+                    $.each(data.result.files, function (index, file) {
+                        $('#fileUploads').append($('<div class="upload">' +
+                                '<span class="glyphicon glyphicon-ok"></span>&nbsp;' +
+                                file.originalName + '</div>'));
+                        $('#photoName').val(file.originalName);
+                    });
+                }
+            });
+        });
+    .row(style='width:700px')
+        .modal.fade(class='modal-tambah' tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        h4 Penambahan etalase
+                    .modal-body(style='padding: 40px')
+                        form(method='post' action='/toko/tambah-etalase')
+                            table(width='520px')
+                                tr: td(width='35%') Nama Etalase
+                                    td: input(type='text' name='namaEtalase' required).form-control
+                                tr: td: br
+                            center
+                                input.btn.btn-primary(type='submit' value='simpan' )
+        if((etalase).length !=0)
+            each val,index in etalase
+                .modal.fade(class='modal-ubah#{index}' tabindex='-1', role='dialog', aria-labelledby='myLargeModalLabel', aria-hidden='true')
+                    .modal-dialog
+                        .modal-content
+                            .modal-header
+                                h4 Pengubahan etalase
+                            .modal-body(style='padding: 40px')
+                                form(method='post' action='/toko/ubah-etalase')
+                                    table(width='520px')
+                                        tr: td(width='35%') Nama Etalase
+                                                input(value='#{val.id}' type='hidden' name='etalaseId')
+                                            td: input(value='#{val.nama}' type='text' name='namaEtalase').form-control
+                                        tr: td: br
+                                    center
+                                        input.btn.btn-primary(type='submit' value='ubah etalase' )
+        h4#daftarEtalase Daftar Etalase
+        small *jika ingin menambahkan produk kedalam etalase, <a href='/produk/daftar'> klik disini</a>
+        p: a.btn.btn-primary(data-toggle='modal' data-target='.modal-tambah'): i.fa.fa-plus &nbsp; tambah etalase
+        table.table
+            if((etalase).length ==0)
+                p: b tidak ada etalase yang terdaftar
+            else
+                each val,index in etalase
+                    tr: td: <b> #{val.nama} </b><br/>
+                        td
+                            u: a(data-toggle='modal' data-target='.modal-ubah#{index}') ubah
+                            &nbsp;
+                            u: a(href='/toko/hapus-etalase/#{val.id}/#{val.nama}') hapus

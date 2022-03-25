@@ -1,0 +1,89 @@
+
+append header
+    header#header
+        // header
+        .headerPasar
+            // header_top
+            .container
+                .row
+                    .col-sm-1
+                    .col-sm-1(style='padding-left : 20px;margin-top : 5px')
+                        .logo
+                            //nanti diganti session.nama dengan mengecek status login, ke halaman app.js bagian pengeseatan session
+                            if (session.loggedIn)
+                                a(href='/pc-view/beranda'): img(src='/images/logoPasarMantap.png', width='120px')
+                            else
+                                a(href='/'): img(src='/images/logoPasarMantap.png', width='120px')
+                    .col-sm-10(style="margin-left : 240px;margin-top : -40px")
+                        //a(href='/keranjang/bersihkantransaksi') bersihkan transaksi
+                        .mainmenu
+                            ul.nav.navbar-nav
+                                li.dropdown
+                                    a(href='#')#kategori
+                                        | Kategori
+                                        i.fa.fa-angle-down
+                                    ul.sub-menu(role='menu',style='width:250px')
+                                            li: a(href='/produk/daftarbykategori/1')#pakaian Pakaian
+                                            li: a(href='/produk/daftarbykategori/2') Buku
+                                            li: a(href='/produk/daftarbykategori/11') Laptop & Notebook
+                                            li: a(href='/produk/daftarbykategori/12') Tablet & Smartphone
+                                            li: a(href='/produk/daftarbykategori/13') Sepatu
+                                li
+                                    form(action='/produk/cari/' method='post')
+                                        div.input-group.custom-search-form(style='width:450px')
+                                            input.form-control(type='text' name='cariNamaProduk' placeholder='Cari Produk')
+                                            span.input-group-btn
+                                                select.form-control(name='kategoriProdukId' style='width:200px;margin-bottom : 25px')
+                                                    option(value='0') Semua Kategori
+                                                    option(value='1') Pakaian
+                                                    option(value='2') Buku
+                                                    option(value='11') Laptop & Notebook
+                                                    option(value='12') Tablet & Smartphone
+                                                    option(value='13') Sepatu
+                                            input.btn.btn-default(type='submit' style='margin-bottom : 25px' value='cari')
+
+                                if (session.loggedIn)
+                                    li(style="padding: 0px 0 0 10px "): img(src='/images/pengguna/#{session.foto}' width='25' )
+                                    li: a(href='/pengguna/profil/'+session.penggunaId)=session.nama
+                                    //todo: rencana kedepan menggunakan notifikasi mengenai penjualan dan pembelian terkini
+                                    //li.dropdown
+                                    //    a.dropdown-toggle(href='#', data-toggle='dropdown')
+                                    //        i.fa.fa-bell
+                                    //        i.fa.fa-caret-down
+                                    //    style.
+                                    //        .dropdown-menu li{ border-bottom: solid lightgray 0.5px}
+                                    //    ul.dropdown-menu
+                                    //        li(style="padding-left :15px"): b Pembelian
+                                    //        li: a(href='/pembelian/statuspemesanan')
+                                    //            div(style='padding : 4px 0') Status Pemesanan &nbsp;
+                                    //                    //todo: rencana kedepan , tambahkan notif jika ada pembelian baru
+                                    //                    //span.small(style='background-color : black;color:white;padding : 2px'): b  2
+                                    //        li: a(href='/pembelian/konfirmasipenerimaan')
+                                    //            div(style='padding: 5px 0px') Konfirmasi Penerimaan &nbsp;
+                                    //                //span.small(style='background-color : black;color:white;padding : 2px'): b  2
+                                    //        li: a(href='/pembelian/konfirmasipembayaran')
+                                    //                div(style='padding: 5px 0px') Konfirmasi Pembayaran &nbsp;
+                                    //                    //span.small(style='background-color : black;color:white;padding : 2px'): b  2
+                                    //        li: b Penjualan
+                                    //        li: a(href='/penjualan/statuspengiriman')
+                                    //            div(style='padding : 4px 0') Status Pengiriman &nbsp;
+                                    //                    //span.small(style='background-color : black;color:white;padding : 2px'): b  2
+                                    //        li: a(href='/penjualan/konfirmasipengiriman')
+                                    //            div(style='padding: 5px 0px') Konfirmasi Pengiriman &nbsp;
+                                    //                //span.small(style='background-color : black;color:white;padding : 2px'): b  2
+                                    //        li: a(href='/penjualan/pesananbaru')
+                                    //                div(style='padding: 5px 0px') Pesanan Baru &nbsp;
+                                    //                    //span.small(style='background-color : black;color:white;padding : 2px'): b  2
+                                    li: a(href='/keranjang/')
+                                            i.fa.fa-shopping-cart &nbsp;
+                                            span(style='background-color : red;color:white;padding : 2px;margin: 10px 0 0 0'): b=(session.cart).length
+                                    li: a(href='/keluar'): i.fa.fa-power-off  Log Out
+                                        p &nbsp
+                                else
+                                    li
+                                        form(method='post' action='/ceklogin')
+                                            input(name='email', type='text', placeholder='Email' style='width:120px')
+                                            input(name='sandi',type='password', placeholder='Sandi' style='width:110px')
+                                            input.btn-primary(type='submit' value='Masuk')
+                                            p belum punya akun? silahkan &nbsp;
+                                                a(href='/pengguna/registrasi'): u daftar

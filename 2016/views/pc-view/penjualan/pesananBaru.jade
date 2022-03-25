@@ -1,0 +1,25 @@
+extends tabPenjualan  
+  
+append contentDalam
+  if(Invoice.length == 0)
+    .alert.alert-danger
+       center: h4: b Tidak ada daftar pemesanan
+  else
+        each inv,indexInv in Invoice
+            .row.alert.alert-info(style='width:683px; margin : 5px 0px')
+                table( width='650px')
+                    tr
+                        td(height='60px' width='20%' ): img(src='/images/toko/logo-toko.png' width='70px' style="margin-top:-10px")
+                        td(rowspan='3') <h4> Pembelian oleh : #{inv.Pengguna.nama} - <b> #{inv.kode} </b></h4>
+                            p Tanggal transaksi : <b> #{moment(inv.tanggal).format('YYYY-MM-DD')} </b>
+                                i.fa.fa-question-circle(style="cursor: pointer" title="Pesanan Anda akan otomatis dibatalkan apabila penjual tidak merespon dalam waktu yang ditentukan.")
+                                small  Jatuh tempo respon :
+                                    span(style="background-color:blue;color : white;padding:2px") #{moment(inv.jatuh_tempo).format('YYYY-MM-DD')}
+                                p
+                                    a.btn.btn-primary(href='/penjualan/pesananbaru/update/terima/#{inv.id}'): i.fa.fa-check Terima Pesanan
+                                    &nbsp;
+                                    a.btn.btn-primary(href='/penjualan/pesananbaru/update/tolak/#{inv.id}'): i.fa.fa-eraser Tolak Pesanan
+                    //ini untuk rowspan
+                    tr: td
+                        td
+

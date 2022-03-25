@@ -1,0 +1,132 @@
+extends layoutTabPembelian
+append contentDalam
+
+    if(daftarInvoice.length == 0)
+      .alert.alert-danger
+       center
+           h4: b Tidak ada konfirmasi
+    else
+
+        script.
+            function numberFormat(_number, _sep) {
+                _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                if (typeof _sep != "undefined" && _sep != " ") {
+                    _number = _number.replace(/\s/g, _sep);
+                }
+                return _number;
+            }
+        .row
+            each val,index in daftarInvoice
+                .modal.fade(class='modal-konfirmasi#{index}'  role='dialog')
+                      .modal-dialog
+                        .modal-content
+                            .modal-header
+                                button.close(type='button', data-dismiss='modal') ×
+                                h4 Konfirmasi Pembayaran
+                            .modal-body(style='padding: 40px')
+                                form(method='post',action='/pembelian/konfirmasipembayaran/post' enctype='multipart/form-data')
+                                    style.
+                                        td{height: 35px }
+                                    table(width='520px')
+                                        tr: td(width='35%') Invoice
+                                            td=val.kode
+                                            input(type='hidden' name='invoiceId' value='#{val.id}')
+                                        tr: td Total pembelian
+                                            td Rp <span class='total_harga'></span>
+                                            input(type='hidden' name='total_harga' value='#{val.total_harga}')
+                                            script.
+                                                //getDocumentByClass, menggunakan index karena nanti banyak total pembelian
+                                                document.getElementsByClassName("total_harga")[#{index}].innerHTML = numberFormat("#{val.total_harga}", ".");
+                                        tr: td Tanggal Pembayaran
+                                            td: input.form-control(type='date' name='tanggal_pembayaran' required)
+                                        tr: td(colspan=2): hr
+                                        tr: td(colspan=2): b Tambah Rekening Bank
+                                        tr: td Nama Bank
+                                            td: select.form-control(name='bankId' required)
+                                                each val in daftarBank
+                                                    option(value='#{val.kode}') #{val.nama}
+                                        tr: td Nama Pemelik Rekening
+                                            td: input.form-control(type='text' name='nama_pemilik_rekening' required)
+                                        tr: td Nomor Rekening
+                                            td: input#no_rekening.form-control(type='number' name='no_rekening' required)
+
+                                        tr: td(colspan=2): hr
+                                        tr: td Rekening Tujuan
+                                            td 039393091 A/N PT Bridea Indonesia
+                                        //unggah bukti pembayaran dihilangkan karena transfer masuk dapat dicek di mobile banking    
+                                        tr: td: br
+                                    center
+                                        input.btn.btn-primary(type='submit' value='Konfirmasi' )
+        each val,index in daftarInvoice
+            .row.alert.alert-info(style='margin : 20px 0 -10px 0')
+                p <b> Tanggal Transaksi : </b> <i> #{moment(val.tanggal).format('YYYY-MM-DD')} </i> <b> Jatuh Tempo Konfirmasi : </b>
+                    i=moment(val.jatuh_tempo).format('YYYY-MM-DD')
+                    i.fa.fa-question-circle(style="cursor: pointer" title="Pesanan Anda akan otomatis dibatalkan apabila penjual tidak merespon dalam waktu yang ditentukan.")
+                p <b> Total pembelian </b> <br/><b style='font-size : 14pt'> Rp <span class='uang'></span></b>
+                script.
+                    document.getElementsByClassName("uang")[#{index}].innerHTML = numberFormat("#{val.total_harga}", ".");
+
+                .span.pull-right: button.btn.btn-primary(data-toggle='collapse' data-target='.rincianTransaksi#{index}') Detail Transaksi
+                .span.pull-right &nbsp
+                .span.pull-right: a.btn.btn-primary(data-toggle='modal' data-target='.modal-konfirmasi#{index}')  Konfirmasi
+            //- .row(class='rincianTransaksi#{index}')
+            .row(class='rincianTransaksi#{index}').collapse
+                .row(style='margin : -10px 20px')
+                      table(border='1', width='670px')
+                            tr
+                                td(height='40px', colspan='3')
+                                    span(style='font-size : 11pt')
+                                        | Pembelian dari toko :
+                                        a(href='/toko/profil/#{val.Toko.id}')  #{val.Toko.nama}
+                                    span.pull-right(style='font-size : 12pt;font-weight:bold;padding-right:10px')
+                                        | #{val.kode}
+                            each produk,indexProduk in val.Produks
+                                tr
+                                    td(height='70px' colspan='2')
+                                        span.pull-left(style='padding : 0 10px 0 10px')
+                                            img(src='/images/Produk/#{produk.gambar}' width='30px')
+                                        span.pull-left
+                                            b  #{produk.nama}
+                                            br
+                                            b(style='font-size : 8pt') #{produk.Invoice_Produk.jumlah_produk} Barang x Rp <span id='uangPerProduk#{index}#{indexProduk}'></span>
+                                            script.
+                                                document.getElementById("uangPerProduk#{index}#{indexProduk}").innerHTML = numberFormat("#{produk.harga}", ".");
+                                    td
+                                        b  Harga Barang <br>
+                                        //TODO:   jumlah x #{val.Produks.harga}, dibuat dalam format uang juga
+                                        | Rp <span id='hargaDikaliJumlah#{index}#{indexProduk}'></span>
+                                        script.
+                                            document.getElementById("hargaDikaliJumlah#{index}#{indexProduk}").innerHTML = numberFormat(""+(#{produk.harga}*#{produk.Invoice_Produk.jumlah_produk}), ".");
+                            tr
+                                td
+                                    b  Alamat Tujuan<br/>
+                                    b  #{val.Penerima.nama} <br/>
+                                    | #{val.Penerima.alamat} <br/>
+                                    | #{val.Penerima.kecamatan} - #{val.Penerima.Kabupaten.nama}, #{val.Penerima.Kabupaten.kode_pos} <br/>
+                                    | #{val.Penerima.Provinsi.nama}<br/>
+                                    | Telp: #{val.Penerima.telepon}
+                                td()
+                                    b  Keterangan
+                                    br
+                                    | #{val.keterangan}
+                                    span.pull-right
+                                        a(href='#') batalkan pemesanan
+                                td
+                                    b  Ongkos Kirim
+                                    br
+                                    | Rp <span id='ongkosKirim#{index}'></span>
+                                    script.
+                                        document.getElementById("ongkosKirim#{index}").innerHTML = numberFormat("" + #{val.ongkos_kirim}, ".");
+                            tr
+                                td(colspan='3')
+                                    //TODO: total pembayaran dibuat dalam format uang
+                                    span.pull-right(style='padding : 10px 0px;font-size:12pt')
+                                        | Total Pembayaran Rp &nbsp;
+                                        b: span(id='totalPembayaran#{index}')
+                                        script.
+                                            document.getElementById("totalPembayaran#{index}").innerHTML = numberFormat("" + #{val.total_harga}, ".");
+                            br
+
+        br
+        br

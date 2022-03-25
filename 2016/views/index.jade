@@ -1,0 +1,38 @@
+extends pc-view/layoutBelanja
+append content
+    center
+        .row(style='width:900px;font-size : 14pt')
+            p(align='left'): b Pilih kategori
+            each val in kategori_produk
+                .col-sm-4(align='left')
+                    li: a(href='/produk/daftarbykategori/#{val.id}') #{val.kategori}
+        div(style='margin:50px 0')
+        .row(style='width:900px')
+            script.
+                function numberFormat(_number, _sep) {
+                    _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                    _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                    if (typeof _sep != "undefined" && _sep != " ") {
+                        _number = _number.replace(/\s/g, _sep);
+                    }
+                    return _number;
+                }
+            h2.title.text-center Produk Terlaris
+            each value,index in hotlist
+                .col-sm-4
+                    table(style='font-size:9pt')
+                        tr: td(colspan='2'): a(href='/produk/detail/#{value.Produk.id}'): img(src='/images/produk/#{value.Produk.gambar}', width='200px',height='180px')
+                        tr: td(width='110px'): b: a(href='/produk/detail/#{value.Produk.id}') #{value.Produk.nama}
+                            td Harga Rp <span class='uang'> </span>
+                            script.
+                                document.getElementsByClassName("uang")[#{index}].innerHTML = numberFormat("#{value.Produk.harga}", ".");
+        div(style='margin:50px 0')
+        .row(style='width:900px',align='left')
+            h3 PasarMantap - Tempatnya Jual Beli Online <br>
+            p PasarMantap merupakan pasar / mal online yang memungkinkan individu maupun pemilik usaha di Indonesia untuk membuka dan mengelola toko online mereka secara mudah dan gratis, sekaligus memberikan pengalaman berbelanja online yang menyenangkan. Punya online shop? Buka cabang nya di PasarMantap sekarang! Gratis!
+            a.btn-primary.btn(href='/pengguna/registrasi') Daftar
+            | <br><br>
+        div(style='margin:30px 0')
+
+
+

@@ -1,0 +1,69 @@
+
+extends ../layout
+append content
+   script.
+      $(document).ready(function () {
+         $("#provinsi").change(function () {
+            $.ajax({
+               type: 'GET',
+               url: '/getkabupaten/' + $('#provinsi option:selected').val(),
+               success: function (result) {
+                  $('#kabupaten').empty();
+                  $('#kabupaten').append(result.listArr)
+               }
+            })
+         });
+      });
+   .row(style='width:700px')
+        h3 Buka Toko
+        br
+        h4 Isi Informasi Toko
+        //TODO: buat penanganan url /pengaturantoko/update
+        form(method='post', action='/toko/post-buka',enctype='multipart/form-data')
+           table.table
+               tr: td(width='20%') Nama Toko
+                   td(colspan=4): input.form-control(type='text' name='nama' required)
+               tr: td Deskripsi
+                   td(colspan=4): input.form-control(type='text' name='deskripsi' required)
+               tr:   td Lokasi
+                     td(height=70) <b> Provinsi </b><br>
+                        select#provinsi.form-control(required=true,name='provinsiId')
+                           //masalah menampilkan id di view cart
+                           option pilih provinsi
+                           each val in listProvinsi
+                              option(value='#{val.id}') #{val.nama}
+                     td <b> Kotamadya/Kabupaten </b>
+                        //TODO : saat pertama kali muncul, kabupaten harus dichange dulu agar nilai id-nya terisi
+                        select#kabupaten.form-control(required=true,name='kabupatenId')
+                           option(disabled) pilih kabupaten/kota
+                     td <b> Kecamatan </b><br>
+                        input.form-control(name='kecamatan' required="required")
+               tr: td Logo Toko
+                   td(colspan=4)
+                       //TODO: saat upload ganti toko berhasil , ganti src gambar lewat jquery dibawah
+                       img(src='/images/toko/logo-toko.png' width='100px')
+                       br
+                       span.btn.btn-default.btn-file
+                           | Ganti Logo Toko
+                           input#fieldPhoto.form-control(type='file', name='photo', accept='image/*', data-url='/upload-gambar-toko')
+                           input#photoName(type='hidden', name='logo' )
+                       #fileUploads
+               tr: td(colspan='4' align='center'): input.btn.btn-primary(type='submit',value='simpan' name='simpan')
+       script(src='/vendor/jquery-file-upload/js/vendor/jquery.ui.widget.js')
+       script(src='/vendor/jquery-file-upload/js/jquery.iframe-transport.js')
+       script(src='/vendor/jquery-file-upload/js/jquery.fileupload.js')
+       script.
+           $(document).ready(function () {
+               //cara kerja library ini memungkinkan photo telah diupload sebelum form disubmit
+               $('#fieldPhoto').fileupload({
+                   dataType: 'json',
+                   done: function (e, data) {
+                       $.each(data.result.files, function (index, file) {
+                           $('#fileUploads').append($('<div class="upload">' +
+                                   '<span class="glyphicon glyphicon-ok"></span>&nbsp;' +
+                                   file.originalName + '</div>'));
+                           $('#photoName').val(file.originalName);
+                       });
+                   }
+               });
+           });

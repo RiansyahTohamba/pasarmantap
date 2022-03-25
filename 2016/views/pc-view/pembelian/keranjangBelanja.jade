@@ -1,0 +1,115 @@
+extends ../layoutBelanja
+
+append content  
+  .col-sm-11(style="margin-left:50px")
+     .row
+        center(style='font-size: 13pt') <b > Keranjang Belanja </b>  >  Konfirmasi Pembelian
+      br
+     .container
+      h5 Isi keranjang belanja saya
+     .container
+         //TODO: metode hapus satu produk, atau banyak produk
+       .row
+          script.
+               function numberFormat(_number, _sep) {
+                   _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                   _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                   if (typeof _sep != "undefined" && _sep != " ") {
+                       _number = _number.replace(/\s/g, _sep);
+                   }
+                   return _number;
+               }
+          style(type='text/css').
+            td{ padding: 10px 10px;}
+          //TODO : buat invoice dapat memiliki lebih dari 1 produk
+          //a(href='/produk/beli/1') naruto &nbsp;
+          //a(href='/produk/beli/2') naruto 1-20 &nbsp;
+          //a(href='/produk/beli/11') Batik couple
+          //a(href='/produk/beli/18') iphone 7
+          form(action='/keranjang/simpan' method='post')
+              //memanfaatkan index yang dimiliki cart agar produk yang dicetak sesuai index cart
+              each val,index in cart
+                  br
+                  table(border='1', width='90%' style='margin:0 30px')
+                      tr
+                          td(height='60px', colspan='4')
+                              span(style='font-size : 13pt') Pembelian dari toko :
+                                  input(type='hidden' name='tokoId' value='#{val.Toko[0].id}')
+                                  a(href='/toko/profil/#{val.Toko[0].id}')  #{val.Toko[0].nama}
+                      each valPro,indexPro in val.Produk
+                          tr
+                              td(height='70px' colspan='2' width="65%")
+                                  span.pull-left(style='padding : 0 10px 0 10px')
+                                      img(src='/images/produk/#{valPro.gambar}' width='30px')
+                                  span.pull-left
+                                      b  #{valPro.nama}
+                                      br
+                                      b(style='font-size : 8pt')  #{valPro.jumlah} Barang  (<span id='beratSatuProduk#{index}#{indexPro}'></span> kg) x
+                                       | Rp <span id='hargaProduk#{index}#{indexPro}'></span>
+                                      script.
+                                          document.getElementById("hargaProduk#{index}#{indexPro}").innerHTML = numberFormat("#{valPro.harga}", ".");
+                                          document.getElementById("beratSatuProduk#{index}#{indexPro}").innerHTML = #{valPro.beratProduk} / 1000;
+                                      br
+                                      &nbsp;
+                                      a(href='/keranjang/hapus/#{valPro.id}', style='font-size : 8pt') Hapus
+                              td(colspan='2')
+                                  b  Harga Barang <br>
+                                  | Rp <span id='totalHarga#{index}#{indexPro}'></span>
+                                  script.
+                                      document.getElementById("totalHarga#{index}#{indexPro}").innerHTML = numberFormat("#{valPro.totalHarga}", ".");
+                      tr
+                          td
+                              h4: b  Alamat Tujuan                              
+                              b  #{val.Penerima[0].nama} <br/>
+                              | #{val.Penerima[0].alamat} <br/>
+                              |  <input type='hidden' name='idKecamatan' value='#{val.Penerima[0].kecamatan}'/>
+                              |  <input type='hidden' name='idKabupaten' value='#{val.Penerima[0].Kabupaten.id}'/>
+                              |  <input type='hidden' name='idProvinsi' value='#{val.Penerima[0].Provinsi[0].id}'/>
+                              |  #{val.Penerima[0].kecamatan} - #{val.Penerima[0].Kabupaten[0].nama} - #{val.Penerima[0].Kabupaten[0].kodePos} <br/>
+                              | #{val.Penerima[0].Provinsi[0].nama} <br/>
+                              | Telp: #{val.Penerima[0].telepon}
+                          td
+                              b  Keterangan
+                              br
+                              | #{val.keterangan}
+                              span.pull-right
+                                  a(href='/keranjang/hapuspertagihan/#{val.id}') hapus tagihan
+                          td <b> Total Berat </b>
+                              br
+                              | <span id='totalBerat#{index}'></span> kg
+                              input(type='hidden' name='totalBeratPerTagihan' value='#{totalBeratPerTagihan[index]}')
+                              script.
+                                  document.getElementById("totalBerat#{index}").innerHTML = #{totalBeratPerTagihan[index]}/1000;
+                          td <b> Ongkos Kirim</b>
+                              br
+                              | Rp <span id='ongkosKirim#{index}'></span>
+                              script.
+                                  document.getElementById("ongkosKirim#{index}").innerHTML = numberFormat("#{val.ongkosKirim}", ".");
+                      tr: td(colspan='4')
+                            span.pull-right(style='padding : 10px 0px 0px 0;font-size:12pt')
+                                  | Total <b> Rp <span id='totalTagihan#{index}'></span></b>
+                                  input(name='totalPerTagihan' type='hidden' value='#{totalPerTagihan[index]}')
+                                  script.
+                                      document.getElementById("totalTagihan#{index}").innerHTML = numberFormat("#{totalPerTagihan[index]}", ".");
+               .row(style='width:880px') </br>
+                   span.pull-left(style='padding : 10px 20px;margin-left:25px ')
+                       a(href='/keranjang/hapussemua') <i class='fa fa-eraser'> </i> Hapus Semua
+                   span.pull-right(style='padding : 10px 35px 0px 0;font-size:14pt')
+                       | Total Pembelian <b> Rp <span id='total_pembelian'></span></b>
+                       input(name='total_pembelian' type='hidden' value='#{total_pembelian}')
+                       script.
+                           document.getElementById("total_pembelian").innerHTML = numberFormat("#{total_pembelian}", ".");
+              .row </br>
+                   .col-sm-11(style='margin:20px;height:90px')
+                       span.pull-left(style='margin-left : 7px')
+                           a.btn.btn-primary(href='/produk/daftarbykategori/1') < lanjukan berbelanja
+                       span.pull-right(style='margin-left : 20px')
+                           input.btn.btn-inverse(type='submit', value='Konfirmasi Pembelian >' name='btnKonfirmasi' data-url='/keranjang/simpan')
+
+
+
+
+
+
+
+

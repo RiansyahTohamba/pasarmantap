@@ -1,0 +1,54 @@
+doctype html
+html(lang='en')
+  head
+    title Home | E-Shopper
+    link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
+    link(href='/stylesheets/font-awesome.min.css', rel='stylesheet')
+    link(href='/stylesheets/main.css', rel='stylesheet')
+    script(src='/javascripts/jquery-1.11.3.min.js')
+    script(src='/javascripts/bootstrap-3.3.5.min.js')
+    link(href='/stylesheets/dataTables.bootstrap.css', rel='stylesheet')    
+  body
+    include ../header
+  section <br/>
+    style.
+      .navigasi li { border-bottom: solid lightgray 0.5px}
+    .container.containerIsi
+      .row
+        .col-sm-1(style='width:120px')
+        .col-sm-10(style='box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 8px rgba(0, 0, 0, 0.1); padding : 20px 0')
+          .col-sm-2(style='width:200px')
+            .left-sidebar(style='box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0);')
+              #accordian.panel-group.category-products
+                .panel-default
+                  ul.nav.nav-list.navigasi
+                    li.nav-header: h5: b Toko Saya
+                    li
+                      if(session.tokoId)
+                        a(href='/toko/profil/#{session.tokoId}'): b=session.namaToko
+                      else
+                        a(href='/toko/buka'): b Buka Toko Baru
+                    li: a(href='/penjualan/daftarpenjualan') Penjualan
+                    li: a(href='/produk/tambah') Tambah Produk
+                    li: a(href='/produk/daftar') Daftar Produk
+                    if(session.tokoId != 0)
+                      li: a(href='/toko/pengaturan') Pengaturan Toko
+                    li.nav-header: h5: b Profil Saya
+                    //li: a(href='/pemberitahuan') Pemberitahuan
+                    li: a(href='/pembelian/daftartransaksi') Pembelian
+                    //li: a(href='/toko/favorit') Toko Favorit
+                    li: a(href='/produk/wishlist') Wish List
+                    li: a(href='/pengguna/pengaturan-profil') Pengaturan
+              // konten disimpan di block content
+          .col-sm-9.padding-right
+            block content
+
+append footer
+    footer#footer
+      // Footer
+      br
+      br
+      .footer-bottom
+        .container
+          .row
+            p.pull-left © 2016 pasarmantap

@@ -1,0 +1,38 @@
+
+append header
+    header#header
+        // header
+        .headerPasar
+            // header_top
+            .container
+                .row
+                    .col-sm-1
+                    .col-sm-1(style='padding-left : 20px;margin-top : 5px')
+                        .logo
+                            //nanti diganti session.nama dengan mengecek status login, ke halaman app.js bagian pengeseatan session
+                            if (session.loggedIn)
+                                a(href='/pc-view/beranda'): img(src='/images/logoPasarMantap.png', width='120px')
+                            else
+                                a(href='/'): img(src='/images/logoPasarMantap.png', width='120px')
+                    .col-sm-10(style="margin-left : 240px;margin-top : -40px")
+                        //a(href='/keranjang/bersihkantransaksi') bersihkan transaksi
+                        .col-sm-3
+
+                        .mainmenu
+                            ul.nav.navbar-nav
+                                li: u: a(href='/admin/verifikasipembayaran/sudah') Sudah Diverifikasi
+                                li: u: a(href='/admin/verifikasipembayaran/belum') Belum Diverifikasi
+                                li: u: a(href='/admin/dalampengiriman') Dalam Proses Pengiriman
+                                li: u: a(href='/admin/sampaiDitujuan') Sampai Ditujuan
+                                if (session.loggedIn)
+                                    li: i.fa.fa-male=' Superadmin'
+                                    li: a(href='/keluar'): i.fa.fa-power-off  Log Out
+                                        p &nbsp
+                                else
+                                    li
+                                        form(method='post' action='/ceklogin')
+                                            input(name='email', type='text', placeholder='Email' style='width:120px')
+                                            input(name='sandi',type='password', placeholder='Sandi' style='width:110px')
+                                            input.btn-primary(type='submit' value='Masuk')
+                                            p belum punya akun? silahkan
+                                                a(href='#'): u daftar

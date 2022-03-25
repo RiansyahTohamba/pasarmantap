@@ -1,0 +1,170 @@
+extends ../layoutBelanja
+append content    
+    .row
+        .col-sm-1
+        .col-sm-7(style="margin-top:20px")
+            p <a href='/produk/daftarbykategori/#{toko.Produk[0].Kategori_Produk.id}'>#{toko.Produk[0].Kategori_Produk.kategori} </a>
+             | > <a href='/produk/detail/#{toko.Produk[0].id}'> #{toko.Produk[0].nama}</a>
+             | > <a href='#'> beli produk </a>
+            //TODO: fungsinya di cart.tambahCart lalu ke view keranjangBelanja.jade
+            form(method='post', action='/keranjang/tambah')
+                table
+                    tr
+                        td <b style='font-size : 8pt'> Nama Produk </b><br> #{toko.Produk[0].nama}
+                            input(type="hidden" name="produkId" value="#{toko.Produk[0].id}")
+                            input(type="hidden" name="namaProduk" value="#{toko.Produk[0].nama}")
+                            input(type="hidden" name="gambarProduk" value="#{toko.Produk[0].gambar}")
+                            input(type="hidden" name="beratProduk" value="#{toko.Produk[0].berat}")
+                            input(type="hidden" name="hargaProduk" value="#{toko.Produk[0].harga}")
+                            input(type="hidden" name="tokoId" value="#{toko.id}")
+                            input(type="hidden" name="namaToko" value="#{toko.nama}")
+                        td &nbsp;
+                        td Keterangan (Opsional)
+                            textarea.form-control(style='margin: 0px; width: 208px; height: 75px;')
+                    tr
+                        td(style='padding: 0 10px 0px 0px') Jumlah Barang
+                            input#jumlah.form-control(type='number' onkeyup="hitung()" name='jumlah' required=true value='1')
+                        td(width=150) Harga Barang <br> Rp <span id='harga'></span>
+                        td(width=150) Total Harga Barang <br> Rp <span id='total'></span>
+                            script(type='text/javascript').
+                                function numberFormat(_number, _sep) {
+                                    _number = typeof _number != "undefined" && _number > 0 ? _number : "";
+                                    _number = _number.replace(new RegExp("^(\\d{" + (_number.length % 3 ? _number.length % 3 : 0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+                                    if (typeof _sep != "undefined" && _sep != " ") {
+                                        _number = _number.replace(/\s/g, _sep);
+                                    }
+                                    return _number;
+                                }
+
+                                //ketika input#jumlah onchange maka dijalankan fungsi hitung
+                                function hitung() {
+                                    var total = document.getElementById('total');
+                                    var jumlah = document.getElementById('jumlah');
+                                    var hasil_kali = #{toko.Produk[0].harga} * jumlah.value;
+                                    total.innerHTML = numberFormat(hasil_kali + "", "."); //untuk mendapatkan nilai integer yang akan di insert ke table invoice
+                                    var ongkir = document.getElementById('ongkir');
+                                    var hargaSubTotal = hasil_kali + parseInt(ongkir.value);
+                                    //nilai ongkir terbaru belum diambil
+                                    var subTotal = document.getElementById('subTotal');
+                                    subTotal.innerHTML = 'Rp ' + numberFormat(""+hargaSubTotal, ".");//untuk tampilan Rp di sub total
+                                    //var nilaiSubTotal = document.getElementById('nilaiSubTotal');
+                                    // nilaiSubTotal.value = hargaSubTotal;
+                                    return hasil_kali;
+                                }
+                                var harga = document.getElementById('harga');
+                                harga.innerHTML = numberFormat("#{toko.Produk[0].harga}", ".");
+                                var total = document.getElementById('total');
+                                total.innerHTML = numberFormat("#{toko.Produk[0].harga}", ".");
+                                //batas form pembelian
+                hr
+                if(penerima != '')
+                    script.
+                        $(document).ready(function () {
+                            //buffer image
+                            $(document).ajaxStart(function () {
+                                $("#loading").css("display", "block");
+                                $("#ongkosKirim").css("display", "none");
+                            });
+
+                            $("#listPenerima,#jumlah").change( function () {
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '/getpenerima/' + $('#listPenerima option:selected').val(),
+                                    success: function (result) {                                        
+                                        //untuk dimasukkan ke input hidden
+                                        $('#nilaiNamaPenerima').val(""+result.nama);
+                                        $('#nilaiAlamat').val(""+result.alamat);
+                                        $('#nilaiTelepon').val(""+result.telepon);
+                                        $('#nilaiKodePos').val(""+result.Kabupaten.kode_pos);
+                                        $('#nilaiKecamatan').val(""+result.kecamatan);
+                                        $('#nilaiKabupatenId').val(""+result.Kabupaten.id);
+                                        $('#nilaiKabupatenNama').val(""+result.Kabupaten.nama);
+                                        $('#nilaiProvinsiId').val(""+result.Provinsi.id);
+                                        $('#nilaiProvinsiNama').val(""+result.Provinsi.nama);
+                                        //untuk ditampilkan
+                                        $('#namaPenerima').html(result.nama);
+                                        $('#alamatPenerima').html(result.alamat);
+                                        $('#kecamatanPenerima').html(result.kecamatan + ' - ');
+                                        $('#kabupatenPenerima').html(result.Kabupaten.nama + ' - ');
+                                        $('#kodePosPenerima').html(result.Kabupaten.kode_pos);
+                                        $('#provinsiPenerima').html(result.Provinsi.nama);
+                                        var totalBeratSatuProduk = $('#jumlah').val() * #{toko.Produk[0].berat};
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '/getongkir/' + result.Kabupaten.id+'/'+#{toko.Produk[0].id}+'/'+totalBeratSatuProduk,
+                                            success : function(ongkir){
+                                                //TODO: hitung ongkir setelah total berat didapatkan
+                                                $("#loading").css("display", "none");
+                                                $("#ongkosKirim").css("display", "block");
+                                                $('#ongkosKirim').html('Rp ' + numberFormat("" + ongkir, "."));
+                                                $('#ongkir').val(""+ongkir);
+                                                var subTotal = parseInt(ongkir) + parseInt(hitung());
+                                                $('#subTotal').html(' Rp ' + numberFormat("" + subTotal, "."))
+                                            }
+                                        });
+                                    }
+                                })
+                            } );
+                        });
+                    .row                        
+                        select.form-control#listPenerima(required=true,style='font-size:10pt',name='penerimaId')
+                            option(value='') barang belanjaan akan dikirim ke
+                            each val in penerima
+                                option(value='#{val.id}') #{val.nama} - #{val.jenis_alamat}
+                        br
+                        br
+                    .row(style='width:105%;padding:10px;margin-top:-30px;float:left').alert.alert-info
+                        input(type='hidden' name='idKotaAsalToko' value='#{toko.Kabupaten.id}')
+                        input#nilaiNamaPenerima(type="hidden" name="namaPenerima" value="#{penerima[0].nama}")
+                        input#nilaiTelepon(type="hidden" name="telepon" value="#{penerima[0].telepon}")
+                        input#nilaiAlamat(type="hidden" name="alamat" value="#{penerima[0].alamat}")
+                        input#nilaiKecamatan(type="hidden" name="kecamatan" value="#{penerima[0].kecamatan}")
+                        input#nilaiProvinsiId(type="hidden" name="idProvinsi" value="#{penerima[0].Provinsi.id}")
+                        input#nilaiProvinsiNama(type="hidden" name="namaProvinsi" value="#{penerima[0].Provinsi.nama}")
+                        input#nilaiKabupatenId(type="hidden" name="idKabupaten" value="#{penerima[0].Kabupaten.id}")
+                        input#nilaiKabupatenNama(type="hidden" name="namaKabupaten" value="#{penerima[0].Kabupaten.nama}")
+                        input#nilaiKodePos(type="hidden" name="kodePos" value="#{penerima[0].Kabupaten.kode_pos}")
+                        table
+                            tr: td#namaPenerima #{penerima[0].nama}
+                            tr: td#alamatPenerima #{penerima[0].alamat}
+                            tr: td  <span id='kecamatanPenerima'> #{penerima[0].kecamatan} -</span>
+                                <span id='kabupatenPenerima'> #{penerima[0].Kabupaten.nama) -</span>
+                                <span id='kodePosPenerima'>#{penerima[0].Kabupaten.kode_pos)</span>
+                            tr: td#provinsiPenerima #{penerima[0].Provinsi.nama)
+                else
+                    script.
+                        $(document).ready(function () {
+                            document.getElementById('tombolBeli').disabled = true;
+                        });
+
+                .row(style='height:140px'): a.btn.btn-primary(href='/produk/tambahpenerima/#{toko.Produk[0].id}') Tambah alamat baru
+                .row
+                    .col-sm-5 Ongkos pengiriman &nbsp; <img id='loading' src='/images/loading_small.gif' style='display:none;width:30px;margin : -20px 120px'/>
+                        <span id='ongkosKirim' style="font-weight : bold;"></span>
+                        input#ongkir(type='hidden',value='#{ongkosKirim}' name='ongkosKirim')
+                    .col-sm-5 Subtotal &nbsp;
+                        <span id='subTotal' style="font-weight : bold;"></span>
+                        input#nilaiSubTotal(type='hidden' name='nilaiSubTotal' value='#{subTotal}')
+                        <br/><br/>
+                    script.
+                        //TODO:tidak bisa diubah nilainya
+                        var ongkosKirim = document.getElementById('ongkosKirim');
+                        ongkosKirim.innerHTML = 'Rp '+numberFormat("#{ongkosKirim}", ".");
+                        var subTotal = document.getElementById('subTotal');
+                        subTotal.innerHTML = 'Rp '+numberFormat("#{subTotal}", ".");
+                .alert.alert-info pengiriman menggunakan POS. Kecepatan pengiriman tergantung dari lokasi pengiriman dan lokasi tujuan. Untuk kota yang sama, umumnya memakan waktu 2-3 hari.
+                center: input#tombolBeli.btn.btn-primary.form-control(name='beliProduk' type='submit' value='Beli Produk Ini')
+        .col-sm-3(style='margin : 0 30px')
+            h3 Informasi toko
+            table
+                tr: td(rowspan='4',width='110px')
+                    a(href='/toko/profil/#{toko.id}'): img(src='/images/#{toko.logo}', width='100px')
+                tr: td 
+                      a(href='/toko/profil/#{toko.id}') #{toko.nama}
+                      small <br> Daerah Asal <br>
+                      | #{toko.Kabupaten.nama}
+
+    br
+    br
+
+

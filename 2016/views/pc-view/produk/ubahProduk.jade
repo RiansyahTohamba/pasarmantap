@@ -1,0 +1,97 @@
+extends ../layout  
+  
+append content
+ h3 Pengubahan Produk
+ form.form-horizontal(method='post', action='/produk/update',enctype='multipart/form-data')
+     .form-group
+         label.col-sm-3.control-label.left Nama Produk
+         .col-sm-6
+             input(value=produk.id, type='hidden', name='produkId')
+             input.form-control(value=produk.nama type='text', name='nama',required)
+     .form-group
+         label.col-sm-3.control-label.left Kategori
+         .col-sm-6
+             select.form-control(name='kategori',required)
+                 option(value='') pilih kategori
+                 each val in listKategori
+                     option(value='#{val.id}') #{val.kategori}
+     .form-group
+         label.col-sm-3.control-label.left Etalase
+         .col-sm-6
+             select.form-control(name='etalaseId',required)
+                 option(value='') pilih etalase
+                 each val in etalase
+                     option(value='#{val.id}') #{val.nama}
+             small: a(href='/toko/pengaturan#daftarEtalase') + tambah etalase        
+     .form-group
+         label.col-sm-3.control-label.pull-left Harga
+         script(src='/javascripts/jquery.price_format.2.0.min.js').
+         script.
+             $(function () {
+                 $('#harga').priceFormat({
+                     prefix: 'Rp ',
+                     thousandsSeparator: '.'
+                 });
+                 $('#harga').keyup(function () {
+                     $('#nilaiHarga').val($('#harga').unmask());
+                 });
+             });
+         .col-sm-6
+             input#harga.form-control(value=produk.harga type='text', name='harga',required)
+             input#nilaiHarga(value=produk.harga type='hidden', name='nilaiHarga')
+     .form-group
+        label.col-sm-3.control-label.pull-left Berat(gram)
+        .col-sm-6
+            input.form-control(value=produk.berat type='number', name='berat',required)         
+     .form-group
+        label.col-sm-3.control-label.pull-left Foto
+        .col-sm-6
+            span.btn.btn-default.btn-file
+                | Upload
+                input#fieldPhoto.form-control(type='file', name='photo', accept='image/*', data-url='/upload')
+                input#photoName(value=produk.gambar type='hidden', name='gambar' )
+            #fileUploads
+     .form-group
+        label.col-sm-3.control-label.pull-left Kondisi
+        .col-sm-6
+            select.form-control(name='kondisi' required)
+                option(value='')  pilih kondisi
+                option(value='1')  Baru
+                option(value='0')  Bekas
+     .form-group
+        label.col-sm-3.control-label.pull-left Deskripsi Produk
+        .col-sm-6
+            textarea.form-control( type='text', name='deskripsi' required)=produk.deskripsi
+     .form-group
+        .col-sm-offset-2.col-sm-6
+            input#submit.btn.btn-succes(type='submit', value='simpan')
+            &nbsp;
+            input.btn.btn-danger(type='reset', value='batal')
+
+
+    script(src='/vendor/jquery-file-upload/js/vendor/jquery.ui.widget.js')
+    script(src='/vendor/jquery-file-upload/js/jquery.iframe-transport.js')
+    script(src='/vendor/jquery-file-upload/js/jquery.fileupload.js')
+    script.
+        $(document).ready(function () {
+            //cara kerja library ini memungkinkan photo telah diupload sebelum form disubmit
+            $('#fieldPhoto').fileupload({
+                dataType: 'json',
+                done: function (e, data) {
+                    $.each(data.result.files, function (index, file) {
+                        $('#fileUploads').append($('<div class="upload">' +
+                                '<span class="glyphicon glyphicon-ok"></span>&nbsp;' +
+                                file.originalName + '</div>'));
+                        $('#photoName').val(file.originalName);
+                    });
+                }
+            });
+            //$('#submit').click(function(){ alert('penambahan produk berhasil'); });
+        });
+
+
+
+
+
+
+

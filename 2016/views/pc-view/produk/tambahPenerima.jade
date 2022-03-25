@@ -1,0 +1,60 @@
+extends ../layoutBelanja
+
+append content
+    .row
+        .col-sm-1
+        .col-sm-7
+            script.
+                $(document).ready(function () {
+                    $("#provinsi").change(function () {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/getkabupaten/' + $('#provinsi option:selected').val(),
+                            success: function (result) {
+                                $('#kabupaten').empty();
+                                $('#kabupaten').append(result.listArr)
+                            }
+                        })
+                    });
+                });
+            #formPenerima(style='display:block')
+                form(action='/produk/tambahpenerima/insert/', method='post',enctype='multipart/form-data')
+                    table
+                        tr: td(colspan='3' height=70) Simpan Alamat Sebagai *contoh : alamat rumah,alamat teman...<br/>
+                                input.form-control(name='jenis_alamat' type='text' required="required")
+                        input(type='hidden' value='#{idProduk}' name='idproduk')
+                        input(type='hidden' value='#{session.penggunaId}' name='penggunaId')
+                        tr
+                            td(height=40) Nama Penerima <br/>
+                                input.form-control(name='nama' type='text' required="required")
+                            td No. Hp Penerima <br/>
+                                input.form-control(name='telepon' type='text' required="required")
+                        tr: td(colspan='3' height=70) Alamat <br/>
+                            textarea.form-control(name='alamat' cols='60')
+                        tr
+                            td(height=70) <b> Provinsi </b><br>
+                                select#provinsi.form-control(required=true,name='provinsiId')
+                                    //masalah menampilkan id di view cart
+                                    option pilih provinsi
+                                    each val in listProvinsi
+                                        option(value='#{val.id}') #{val.nama}
+                            td <b> Kotamadya/Kabupaten </b>
+                                //TODO : saat pertama kali muncul, kabupaten harus dichange dulu agar nilai id-nya terisi
+                                select#kabupaten.form-control(required=true,name='kabupatenId')
+                                    option(disabled) pilih kabupaten/kota
+                            td <b> Kecamatan </b><br>
+                                input.form-control(name='kecamatan' required="required")
+                        tr: td
+                                input.btn.btn-primary(value='simpan', type='submit')
+                                &nbsp;
+                                input.btn.btn-danger(value='kembali', onclick='history.go(-1)',type='button')
+        .col-sm-3(style='margin : 0 30px')
+             h3 Informasi toko
+             table
+                tr: td(rowspan='4',width='110px')
+                    a(href='/toko/profil/#{toko.id}'): img(src='/images/#{toko.logo}', width='100px')
+                tr: td: a(href='/toko/profil/#{toko.id}') #{toko.nama}
+                tr: td #{toko.Kabupaten.nama}
+                tr: td: a.btn-primary.btn(href='/produk/favorit/#{toko.id}') Jadikan Favorit
+    br
+    br
